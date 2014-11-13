@@ -13,6 +13,21 @@ class Record
   has n, :notes, { :child_key => [:record_id]}
 end
 
+class User
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :name, String
+  property :real_name, String
+  property :tz, String
+  property :tz_label, String
+  property :full_name, String
+  property :last_name, String
+
+  belongs_to :record
+end
+
+
 class Note
   include DataMapper::Resource
 

@@ -13,5 +13,5 @@ SLACK_API_TOKEN=ENV["SLACK"]
 client = Slack::Client.new(token: SLACK_API_TOKEN)
 
 puts client.users.list
-puts client.channels.list
+#puts client.channels.list
 #puts client.channels.history('C1234567')
