@@ -126,6 +126,7 @@ DEPENDENCIES
   dm-sqlite-adapter
   dotenv
   faker
+  json
   pg
   rake
   rerun

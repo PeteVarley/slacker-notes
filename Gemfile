@@ -6,6 +6,7 @@ gem 'data_mapper'
 gem 'rake'
 gem 'faker'
 gem 'slack-client'
+gem 'json'
 
 group :development do
   gem "sqlite3"
