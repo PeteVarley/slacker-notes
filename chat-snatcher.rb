@@ -13,6 +13,18 @@ Dotenv.load
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
+helpers do
+  def default_user
+    @default_record ||= Record.last
+  end
+end
+
+get "/" do
+  @record = default_record
+
+  erb :'chats/show'
+end
+
 #route goes here
 # def save_info
 #   client = Slack::Client.new(token: SLACK_API_TOKEN)

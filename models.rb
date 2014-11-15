@@ -10,11 +10,11 @@ class Record
   property :website, String, { :format => :url }
 
 
-  has n, :messages, { :child_key => [:record_id]}
+  has n, :chats, { :child_key => [:record_id]}
 end
 
 
-class Message
+class Chat
   include DataMapper::Resource
 
   property :id, Serial
@@ -26,4 +26,4 @@ class Message
 end
 
 DataMapper.finalize
-DataMapper.auto_upgrade!
+DataMapper.auto_migrate!
