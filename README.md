@@ -1,4 +1,4 @@
-# chat_snatcher
+# Chat Snatcher
 
 Snatches Slack Chat
 
