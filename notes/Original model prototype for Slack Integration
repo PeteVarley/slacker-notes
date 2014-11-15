@@ -1,0 +1,21 @@
+Original model prototype for Slack Integration
+
+# def save_info
+#   client = Slack::Client.new(token: SLACK_API_TOKEN)
+#   last_message_data = JSON.parse(client.channels.history(:channel=>'C030C7R5F',:count=>1))
+#   record = Record.get([1])
+#   puts "last_message_data"
+#   message_data = last_message_data["messages"]
+#   puts "message_data"
+#   last_message_hash = message_data[0]
+#   last_message = last_message_hash["text"]
+#   puts "last_message"
+#   p last_message
+
+#   puts record
+#   text = Message.new(:text => last_message)
+#   record.messages << text
+#   record.save
+# end
+
+# save_info

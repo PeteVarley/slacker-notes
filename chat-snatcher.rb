@@ -14,34 +14,38 @@ Dotenv.load
 SLACK_API_TOKEN=ENV["SLACK"]
 
 helpers do
-  def default_user
+  def default_record
     @default_record ||= Record.last
   end
 end
 
 get "/" do
-  @record = default_record
+  @chats = default_record.chats
 
-  erb :'chats/show'
+  erb :home
 end
 
-#route goes here
-# def save_info
-#   client = Slack::Client.new(token: SLACK_API_TOKEN)
-#   last_message_data = JSON.parse(client.channels.history(:channel=>'C030C7R5F',:count=>1))
-#   r = Record.get([1])
-#   puts "last_message_data"
-#   message_data = last_message_data["messages"]
-#   puts "message_data"
-#   last_message_hash = message_data[0]
-#   last_message = last_message_hash["text"]
-#   puts "last_message"
-#   p last_message
+get "/archive/:id" do
+  @chats = default_record.chats
+  client = Slack::Client.new(token: SLACK_API_TOKEN)
+  last_message_data = JSON.parse(client.channels.history(:channel=>'C030C7R5F',:count=>[:id]))
+  message_data = last_message_data["messages"]
+  last_message_hash = message_data[0]
+  @last_message = last_message_hash["text"]
+  @chat = Chat.create(:text => @last_message)
+  @chats << @chat
+  @chats.save
 
-#   puts r
-#   text = Message.new(:text => last_message)
-#   r.messages << text
-#   r.save
-# end
+  if @chat.saved?()
+    redirect("/chat/#{@chat.id}")
+  else
+    erb(:chat)
+  end
+  erb :chat
+end
 
-# save_info
+get("/chat/:id") do
+  @chat = Chat.get params[:id]
+
+  body(erb(:chat))
+end
