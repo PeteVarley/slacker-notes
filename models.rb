@@ -1,5 +1,6 @@
 require 'data_mapper'
 
+DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'])
 
 class Record
@@ -26,4 +27,4 @@ class Chat
 end
 
 DataMapper.finalize
-DataMapper.auto_migrate!
+DataMapper.auto_upgrade!
