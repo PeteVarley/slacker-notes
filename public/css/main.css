@@ -1,0 +1,152 @@
+/*
+ * HEADER
+ */
+header {
+  min-width: 100%;
+  text-align: center;
+  background-color: #555;
+  color: #fff;
+  padding: 0.5em;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+
+/*
+ * PAGE
+ */
+.page {
+  margin: 0 auto;
+  width: 720px;
+}
+
+/* Separate page nav area from the main content with a border */
+.page nav {
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid;
+  margin-bottom: 0.5em;
+}
+
+.page nav a {
+  float: right;
+}
+
+/* Highlight section for featured content */
+.highlight {
+  width: 100%;
+  margin-bottom: 3em;
+}
+
+.highlight p { font-size: 1.5em; }
+
+
+/*
+ * GRID
+ */
+.row {
+  display: block;
+  clear: both;
+}
+
+.row:after {
+  display: block;
+  content: "";
+  line-height: 0;
+  clear: both;
+}
+
+/* 1/3 column (720 * 1/3) */
+.one_third {
+  float: left;
+  width: 240px;
+  padding-left: 20px;
+}
+
+/* 2/3 column (720 * 2/3 - margin) */
+.two_thirds {
+  float: left;
+  width: 460px;
+  margin-right: 20px;
+}
+
+
+/*
+ * FORMS
+ */
+textarea {
+  width: 360px;
+  height: 3em;
+}
+
+form.vertical label {
+  display: inline-block;
+  min-width: 120px;
+  vertical-align: top;
+}
+
+form.vertical input { margin-bottom: 0.25em; }
+
+form.vertical input[type="submit"] {
+  margin-left: 124px;
+  padding: 0.25em;
+}
+
+form.mini input[type="text"] { max-width: 160px; }
+form.mini input[type="submit"] { float: right; }
+
+
+/*
+ * UTILITY CLASSES
+ */
+.no_bullets {
+  list-style-type: none;
+}
+
+.no_padding {
+  padding: 0;
+}
+
+.float_right {
+  float: right;
+  padding-left: 1em;
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+/*
+  RESUME STYLING
+*/
+
+.edit-profile {
+  float: right;
+}
+
+
+/*
+ * SECTION STYLING
+ */
+
+/* Jobs section */
+.jobs li { margin-bottom: 2.5em; }
+.jobs li h4 { margin-bottom: 0; }
+
+/* Skills section */
+.skills li {
+  padding: 0.3em;
+  margin-bottom: 1em;
+  background-color: #ccc;
+  float: right;
+  width: 100%;
+  height: 30px;
+
+}
+
+.schools li { margin-bottom: 2.5em; }
+
+.schools li h4 { margin-bottom: 0; }
