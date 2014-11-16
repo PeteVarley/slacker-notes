@@ -1,0 +1,10 @@
+HI
+
+<% @chat %>
+
+<% @messages_data.count.times do |x| %>
+    <% message_hash = @messages_data[x] %>
+    puts "message_hash"
+    puts <%= message_hash %>
+  </br>
+<% end %>

@@ -28,20 +28,49 @@ end
 get "/archive/:id" do
   @chats = default_record.chats
   client = Slack::Client.new(token: SLACK_API_TOKEN)
-  last_message_data = JSON.parse(client.channels.history(:channel=>'C030C7R5F',:count=>[:id]))
-  message_data = last_message_data["messages"]
-  last_message_hash = message_data[0]
-  @last_message = last_message_hash["text"]
-  @chat = Chat.create(:text => @last_message)
-  @chats << @chat
-  @chats.save
+  @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>[:id]))
+  puts @message_data
+
+  @messages_data = @message_data["messages"]
+  puts "@messages_data"
+  puts @messages_data
+
+  puts "@message_data.count"
+  puts @messages_data.count
+
+  @messages_data.count.times do |x|
+    puts "x"
+    puts x
+    message_hash = @messages_data[x]
+    puts "message_hash"
+    puts message_hash
+
+    @user = message_hash["user"]
+    puts "user"
+    puts @user
+    @text = message_hash["text"]
+    puts "text"
+    puts @text
+    @ts = message_hash["ts"]
+    puts "ts"
+    puts @ts
+    @chat = Chat.create(:user => @user, :text => @text, :ts => @ts)
+    @chats << @chat
+    @chats.save
+
+
+    # puts "X"
+    # puts x
+    # message_hash = @messages_data[x]
+  end
+
 
   if @chat.saved?()
-    redirect("/chat/#{@chat.id}")
+    erb(:archive)
   else
-    erb(:chat)
+    redirect "/archive/:id"
   end
-  erb :chat
+
 end
 
 get("/chat/:id") do

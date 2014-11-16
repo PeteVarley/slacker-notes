@@ -19,6 +19,7 @@ class Chat
   include DataMapper::Resource
 
   property :id, Serial
+  property :chat_object, Object
   property :user, String
   property :text, String
   property :ts, String
