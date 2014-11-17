@@ -93,3 +93,11 @@ get("/archive/:id") do
 
   erb(:archive)
 end
+
+get("/users") do
+
+  client = Slack::Client.new(token: SLACK_API_TOKEN)
+  @user_data = JSON.parse(client.channels.user)
+
+  erb(:users)
+end

@@ -15,6 +15,17 @@ class Record
   has n, :chats, :through => :archives
 end
 
+class User
+  include DataMapper:Resource
+
+  property :id, Serial
+  property :name, String
+  property :deleted, Boolean
+  property :color, String
+
+  has n, :chats
+end
+
 class Archive
   include DataMapper::Resource
 
@@ -35,6 +46,7 @@ class Chat
   property :ts, String
 
   belongs_to :archive
+  belongs_to :user
 end
 
 DataMapper.finalize
