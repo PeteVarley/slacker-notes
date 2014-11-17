@@ -1,1 +1,8 @@
-HI
+<p>Archives</p>
+
+<% @archives.each do |archive| %>
+  <li>
+    <div id ="description"><a href="/archive/<%= archive.id %>"><%= archive.ts %></a>
+    </div>
+  </li>
+<% end %>

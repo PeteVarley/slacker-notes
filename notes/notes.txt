@@ -6,3 +6,8 @@
     puts <%= message_hash %>
   </br>
 <% end %>
+
+
+Add a one to one relation ship for users
+ - You will need to pull all users and save them to the database
+ - You will need to associate these users to a number in the Chat model and possibly the Archive model

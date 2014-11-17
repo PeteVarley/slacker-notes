@@ -20,7 +20,7 @@ helpers do
 end
 
 get "/" do
-  @chats = default_record.chats
+  @archives = default_record.archives
 
   erb :home
 end
