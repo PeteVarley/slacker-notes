@@ -1,10 +1,7 @@
-HI
+<p>Archive ID</p>
+<%= @archive.id %>
 
-<% @chat %>
-
-<% @messages_data.count.times do |x| %>
-    <% message_hash = @messages_data[x] %>
-    puts "message_hash"
-    puts <%= message_hash %>
-  </br>
+<% @archive.chats.each do |chat| %>
+  <p><%= chat["text"] %></p>
+  <p><%= chat["ts"] %></p>
 <% end %>

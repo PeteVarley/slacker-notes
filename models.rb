@@ -11,20 +11,30 @@ class Record
   property :website, String, { :format => :url }
 
 
-  has n, :chats, { :child_key => [:record_id]}
+  has n, :archives, { :child_key => [:record_id]}
+  has n, :chats, :through => :archives
 end
 
+class Archive
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :name, String
+  property :ts, String
+
+  belongs_to :record
+  has n, :chats, { :child_key => [:record_id]}
+end
 
 class Chat
   include DataMapper::Resource
 
   property :id, Serial
-  property :chat_object, Object
   property :user, String
   property :text, String
   property :ts, String
 
-  belongs_to :record
+  belongs_to :archive
 end
 
 DataMapper.finalize
