@@ -16,12 +16,17 @@ class Record
 end
 
 class User
-  include DataMapper:Resource
+  include DataMapper::Resource
 
   property :id, Serial
   property :name, String
   property :deleted, Boolean
   property :color, String
+  property :first_name, String
+  property :last_name, String
+  property :email, String
+  property :profile_picture, String
+
 
   has n, :chats
 end
