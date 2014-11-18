@@ -96,8 +96,45 @@ end
 
 get("/users") do
 
+  puts 'default record'
+  puts @default_record
+
+  @users = default_record.users
+
   client = Slack::Client.new(token: SLACK_API_TOKEN)
-  @user_data = JSON.parse(client.channels.user)
+  @users_data = JSON.parse(client.users.list)
+
+
+  puts "JSON parse"
+  puts JSON.parse(client.users.list)
+  puts "users data"
+  puts "_____________"
+  puts @users_data
+
+  @users_data = @users_data["members"]
+  puts "@users_data"
+  puts @users_data
+
+  puts "@users_data.count"
+  puts @users_data.count
+
+  @users_data.count.times do |x|
+    puts "x"
+    puts x
+    user_hash = @users_data[x]
+    puts "user_hash"
+    puts user_hash
+
+    @name = user_hash["name"]
+    puts "name"
+    puts @user
+
+    @user = User.create(:name => @name)
+    @users << @user
+    @users.save
+
+  end
+
 
   erb(:users)
 end

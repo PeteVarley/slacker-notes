@@ -10,7 +10,7 @@ class Record
   property :name, String, { :required => true }
   property :website, String, { :format => :url }
 
-
+  has n, :users, { :child_key => [:record_id]}
   has n, :archives, { :child_key => [:record_id]}
   has n, :chats, :through => :archives
 end
@@ -21,14 +21,31 @@ class User
   property :id, Serial
   property :name, String
   property :deleted, Boolean
-  property :color, String
+
+  belongs_to :record
+  has n, :chats
+  has n, :infos
+end
+
+class Info
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :name, String
+
+  belongs_to :user
+  has n, :profiles
+end
+
+class Profile
+  include DataMapper::Resource
+
+  property :id, Serial
   property :first_name, String
   property :last_name, String
-  property :email, String
-  property :profile_picture, String
+  property :image_24, String
 
-
-  has n, :chats
+  belongs_to :info
 end
 
 class Archive
