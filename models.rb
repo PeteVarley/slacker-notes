@@ -10,9 +10,8 @@ class Record
   property :name, String, { :required => true }
   property :website, String, { :format => :url }
 
-  has n, :users, { :child_key => [:record_id]}
-  has n, :archives, { :child_key => [:record_id]}
-  has n, :chats, :through => :archives
+  has n, :users
+  has n, :archives
 end
 
 class User
@@ -22,8 +21,7 @@ class User
   property :name, String
   property :deleted, Boolean
 
-  belongs_to :record
-  has n, :chats
+  #has n, :chats needst to be fixed
   has n, :infos
 end
 
@@ -56,19 +54,18 @@ class Archive
   property :ts, String
 
   belongs_to :record
-  has n, :chats, { :child_key => [:record_id]}
+  has n, :chats
 end
 
 class Chat
   include DataMapper::Resource
 
   property :id, Serial
-  property :user, String
-  property :text, String
-  property :ts, String
+  property :user, Text
+  property :text, Text
+  property :ts, Text
 
   belongs_to :archive
-  belongs_to :user
 end
 
 DataMapper.finalize

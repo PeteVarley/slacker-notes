@@ -11,3 +11,19 @@
 Add a one to one relation ship for users
  - You will need to pull all users and save them to the database
  - You will need to associate these users to a number in the Chat model and possibly the Archive model
+
+
+ Use the following code to debug objects not saving
+
+     # puts @current_archive.save
+
+    # puts @current_archive.chats.first.errors
+
+    # puts 'chats errors any'
+    # puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+    # @current_archive.chats.each do |chat|
+    #   chat.errors.each do |error|
+    #     p error
+    #   end
+    # end

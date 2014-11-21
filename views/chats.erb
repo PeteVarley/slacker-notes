@@ -1,8 +1,11 @@
 <h1>Chats saved</h1>
+<p><%= @messages_data.count %></p>
 
 <% @messages_data.count.times do |x| %>
-    <% message_hash = @messages_data[x] %>
-    puts "message_hash"
-    puts <%= message_hash %>
+
+    <p><%= @user %></p>
+    <p><%= @text %></p>
+    <p><%= @ts %></p>
+
   </br>
 <% end %>

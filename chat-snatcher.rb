@@ -40,41 +40,41 @@ get "/chats/:num" do
 
   client = Slack::Client.new(token: SLACK_API_TOKEN)
   @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>num))
-  puts "JSON parse"
-  puts client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>2)
-  puts "message data"
-  puts "_____________"
-  puts @message_data
 
   @messages_data = @message_data["messages"]
-  puts "@messages_data"
-  puts @messages_data
-
-  puts "@message_data.count"
-  puts @messages_data.count
 
   @messages_data.count.times do |x|
-    puts "x"
-    puts x
+
     message_hash = @messages_data[x]
-    puts "message_hash"
-    puts message_hash
+
 
     @user = message_hash["user"]
-    puts "user"
-    puts @user
+
     @text = message_hash["text"]
-    puts "text"
-    puts @text
+
     @ts = message_hash["ts"]
-    puts "ts"
-    puts @ts
-    @chat = Chat.create(:user => @user, :text => @text, :ts => @ts)
+
+    @chat = Chat.create(:text => @text)
+
     @current_archive.chats << @chat
-    @current_archive.save
+
+
+    if @current_archive.save
+     # my_account is valid and has been saved
+    else
+      puts 'chats errors any'
+      puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+      @current_archive.chats.each do |chat|
+       chat.errors.each do |error|
+         p error
+       end
+     end
+   end
+
+
 
   end
-
 
   if @chat.saved?()
     erb(:chats)
@@ -97,41 +97,37 @@ end
 get("/users") do
 
   puts 'default record'
-  puts @default_record
-
   @users = default_record.users
 
   client = Slack::Client.new(token: SLACK_API_TOKEN)
+
   @users_data = JSON.parse(client.users.list)
 
+  puts 'client.users.method'
+  puts client.users.methods
 
-  puts "JSON parse"
-  puts JSON.parse(client.users.list)
-  puts "users data"
-  puts "_____________"
-  puts @users_data
+  # @user_info = JSON.parse(client.users.info(token: SLACK_API_TOKEN,user: 'U02NQ4BEQ'))
+
+  # puts 'user info'
+  # p @user_info
 
   @users_data = @users_data["members"]
-  puts "@users_data"
-  puts @users_data
-
-  puts "@users_data.count"
-  puts @users_data.count
 
   @users_data.count.times do |x|
-    puts "x"
-    puts x
     user_hash = @users_data[x]
-    puts "user_hash"
-    puts user_hash
+
 
     @name = user_hash["name"]
-    puts "name"
-    puts @user
+    @id = user_hash["id"]
+
 
     @user = User.create(:name => @name)
+    puts "user name"
+    puts @user.name
     @users << @user
     @users.save
+    puts @user.id
+
 
   end
 
