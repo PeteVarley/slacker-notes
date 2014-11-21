@@ -64,6 +64,11 @@ form.mini input[type="submit"] { float: right; }
 .archives li h4 { margin-bottom: 0; }
 
 /* Chats section */
+
+.data {
+  display: none;
+  visibility: hidden;
+}
 .chats li {
   padding: 0.3em;
   margin-bottom: 1em;

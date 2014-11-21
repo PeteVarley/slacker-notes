@@ -1,11 +1,24 @@
-<h1>Chats saved</h1>
-<p><%= @messages_data.count %></p>
+<head>
+<style>
+.data {
+    background-color: blue;
+}
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<h1> <%= @messages_data.count %> chats have been saved</h1>
 
 <% @messages_data.count.times do |x| %>
 
-    <p><%= @user %></p>
-    <p><%= @text %></p>
-    <p><%= @ts %></p>
+    <div class="data"><%= a = @messages_data[x] %></div>
+
+    <p><%= a["user"]%></p>
+    <p><%= a["text"]%></p>
 
   </br>
 <% end %>
+<script>
+  $( ".data" ).remove();
+</script>
+</body>

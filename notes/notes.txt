@@ -27,3 +27,7 @@ Add a one to one relation ship for users
     #     p error
     #   end
     # end
+
+Chats name
+Chatterday Night Live
+Chatterday Night Fever
