@@ -1,7 +1,8 @@
-<p>Archive ID</p>
-<%= @archive.id %>
+<h1>Archive ID <%= @archive.id %></h1>
+
 
 <% @archive.chats.reverse.each do |chat| %>
+  <p><%= chat["user"] %></p>
+  <p><%= chat["ts"] %></p>
   <p><%= chat["text"] %></p>
-  <p><%= chat["id"] %></p>
 <% end %>

@@ -63,7 +63,7 @@ post "/chats" do
 
     @ts = message_hash["ts"]
 
-    @chat = Chat.create(:text => @text)
+    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts)
 
     @current_archive.chats << @chat
 
