@@ -1,6 +1,26 @@
-<h1>Users</h1>
-
-<% @users_data.count.times do |x| %>
-    <% user_hash = @users_data[x] %>
-      <p><%= user_hash["name"] %></p>
-<% end %>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <script src="js/vendor/modernizr.js"></script>
+  </head>
+<body>
+  <div class="row">
+    <div class="large-12 columns"><h1>Users</h1></div>
+    <div class="large-12 columns">
+      <div class="panel">
+        <% @users_data.count.times do |x| %>
+          <% user_hash = @users_data[x] %>
+          <p><%= user_hash["name"] %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <script src="js/vendor/jquery.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+</body>

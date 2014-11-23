@@ -164,14 +164,6 @@ get("/users") do
 
   @users_data = JSON.parse(client.users.list)
 
-  puts 'client.users.method'
-  puts client.users.methods
-
-  # @user_info = JSON.parse(client.users.info(token: SLACK_API_TOKEN,user: 'U02NQ4BEQ'))
-
-  # puts 'user info'
-  # p @user_info
-
   @users_data = @users_data["members"]
 
   @users_data.count.times do |x|
