@@ -169,14 +169,17 @@ get("/users") do
   @users_data.count.times do |x|
     user_hash = @users_data[x]
 
+    @id = user_hash["id"]
+    puts "Here is the id"
+    puts @id
 
     @name = user_hash["name"]
-    @id = user_hash["id"]
 
-
-    @user = User.create(:name => @name)
-    puts "user name"
+    @user = User.create(:id =>@id, :name => @name)
+    puts "username"
     puts @user.name
+    puts "id"
+    puts @user.id
     @users << @user
     @users.save
     puts @user.id

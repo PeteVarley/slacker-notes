@@ -14,6 +14,7 @@
         <% @users_data.count.times do |x| %>
           <% user_hash = @users_data[x] %>
           <p><%= user_hash["name"] %></p>
+          <p><%= user_hash["id"]%>
         <% end %>
       </div>
     </div>
