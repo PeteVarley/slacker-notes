@@ -1,8 +1,8 @@
-<p>Archives</p>
+Home page
 
-<% @archives.each do |archive| %>
-  <li>
-    <div id ="description"><a href="/archive/<%= archive.id %>"><%= archive.ts %></a>
-    </div>
-  </li>
-<% end %>
+<form name ="new_archive" action="/chats" method="post" accept-charset="utf-8">
+
+  <input type="text" name="number[chat_number]" placeholder="Chat number">
+
+  <input type="submit" value="Add archive">
+</form>

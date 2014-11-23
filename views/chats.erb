@@ -11,13 +11,29 @@
 
 <% @messages_data.count.times do |x| %>
 
-    <div class="data"><%= a = @messages_data[x] %></div>
+    <div class="data"><%= message_content = @messages_data[x] %></div>
 
-    <p><%= a["user"]%></p>
-    <p><%= a["text"]%></p>
+    <p><%= message_content["user"]%></p>
+    <p><%= message_content["text"]%></p>
 
   </br>
 <% end %>
+
+<div id="hidden_form">
+<h5> will be hidden form</h5>
+<form action="/archive" method="post">
+<% @messages_data.count.times do |x| %>
+
+    <div class="data"><%= message_content = @messages_data[x] %></div>
+
+    <p><%= message_content["user"]%></p>
+    <p><%= message_content["text"]%></p>
+
+  </br>
+<% end %>
+  </form>
+</div>
+
 <script>
   $( ".data" ).remove();
 </script>

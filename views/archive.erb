@@ -1,7 +1,7 @@
 <p>Archive ID</p>
 <%= @archive.id %>
 
-<% @archive.chats.each do |chat| %>
+<% @archive.chats.reverse.each do |chat| %>
   <p><%= chat["text"] %></p>
   <p><%= chat["id"] %></p>
 <% end %>
