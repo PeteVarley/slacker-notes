@@ -18,11 +18,13 @@ class User
   include DataMapper::Resource
 
   property :id, Serial
+  property :slack_id, String
   property :name, String
   property :first_name, String
   property :last_name, String
 
   #has n, :chats needst to be fixed
+  belongs_to :record
 
 end
 

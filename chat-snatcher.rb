@@ -13,11 +13,77 @@ Dotenv.load
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
+def create_record
+    r = Record.new
+    r.name = "Big"
+    r.save
+end
+
 helpers do
   def default_record
     @default_record ||= Record.last
   end
 end
+
+def create_users
+  puts 'default record'
+  @users = Record.last.users
+
+  client = Slack::Client.new(token: SLACK_API_TOKEN)
+
+  @users_data = JSON.parse(client.users.list)
+
+  @users_data = @users_data["members"]
+
+  @users_data.count.times do |x|
+    user_hash = @users_data[x]
+
+    @slack_id = user_hash["id"]
+    puts "Here is the id"
+    puts @slack_id
+
+    @name = user_hash["name"]
+
+    @user = User.create(:slack_id => @slack_id, :name => @name)
+    puts "username"
+    puts @user.name
+    puts ":slack_id"
+    puts @user.slack_id
+    @users << @user
+    puts @users.save
+    # @users.save
+    # puts @user.id
+    if @users.save
+      #valid
+    else
+      puts 'user save errors any'
+      @users.any? { |user| user.errors.any? }
+      @users.each do |user|
+        user.errors.each do |user|
+          p user
+        end
+      end
+    end
+
+  end
+end
+
+#--------
+#   if @current_archive.save
+  #    # my_account is valid and has been saved
+  #   else
+  #     puts 'chats errors any'
+  #     puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+  #     @current_archive.chats.each do |chat|
+  #      chat.errors.each do |error|
+  #        p error
+  #      end
+  #    end
+  #  end
+#--------
+
+
 
 get "/" do
 
@@ -157,36 +223,30 @@ end
 
 get("/users") do
 
-  puts 'default record'
-  @users = default_record.users
+  # puts 'default record'
+  # @users = default_record.users
 
-  client = Slack::Client.new(token: SLACK_API_TOKEN)
+  # client = Slack::Client.new(token: SLACK_API_TOKEN)
 
-  @users_data = JSON.parse(client.users.list)
+  # @users_data = JSON.parse(client.users.list)
 
-  @users_data = @users_data["members"]
+  # @users_data = @users_data["members"]
 
-  @users_data.count.times do |x|
-    user_hash = @users_data[x]
+  # @users_data.count.times do |x|
+  #   user_hash = @users_data[x]
 
-    @id = user_hash["id"]
-    puts "Here is the id"
-    puts @id
+  #   @id = user_hash["id"]
+  #   puts "Here is the id"
+  #   puts @id
 
-    @name = user_hash["name"]
+  #   @name = user_hash["name"]
 
-    @user = User.create(:id =>@id, :name => @name)
-    puts "username"
-    puts @user.name
-    puts "id"
-    puts @user.id
-    @users << @user
-    @users.save
-    puts @user.id
-
-
-  end
-
-
-  erb(:users)
+  #   @user = User.create(:id =>@id, :name => @name)
+  #   puts "username"
+  #   puts @user.name
+  #   puts "id"
+  #   puts @user.id
+  #   @users << @user
+  #   @users.save
+  #   puts @user.id
 end
