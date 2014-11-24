@@ -90,6 +90,12 @@ get "/" do
   erb :home
 end
 
+get("/users") do
+  @users = default_record.users
+
+  erb :users
+end
+
 get "/archives" do
   @archives = default_record.archives
 
@@ -219,34 +225,4 @@ get("/archive/:id") do
   puts @archive.chats
 
   erb(:archive)
-end
-
-get("/users") do
-
-  # puts 'default record'
-  # @users = default_record.users
-
-  # client = Slack::Client.new(token: SLACK_API_TOKEN)
-
-  # @users_data = JSON.parse(client.users.list)
-
-  # @users_data = @users_data["members"]
-
-  # @users_data.count.times do |x|
-  #   user_hash = @users_data[x]
-
-  #   @id = user_hash["id"]
-  #   puts "Here is the id"
-  #   puts @id
-
-  #   @name = user_hash["name"]
-
-  #   @user = User.create(:id =>@id, :name => @name)
-  #   puts "username"
-  #   puts @user.name
-  #   puts "id"
-  #   puts @user.id
-  #   @users << @user
-  #   @users.save
-  #   puts @user.id
 end

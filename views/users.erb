@@ -11,10 +11,10 @@
     <div class="large-12 columns"><h1>Users</h1></div>
     <div class="large-12 columns">
       <div class="panel">
-        <% @users_data.count.times do |x| %>
-          <% user_hash = @users_data[x] %>
-          <p><%= user_hash["name"] %></p>
-          <p><%= user_hash["id"]%>
+        <% @users.each do |user| %>
+           <p><%= user["slack_id"] %></p>
+           <p><%= user["name"] %></p>
+
         <% end %>
       </div>
     </div>
