@@ -55,6 +55,16 @@ form.mini input[type="submit"] { float: right; }
   visibility: hidden;
 }
 
+.author {
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.time_stamp {
+  font-size: 10px;
+}
+
 /*
  * SECTION STYLING
  */

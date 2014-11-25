@@ -137,8 +137,8 @@ post "/chats" do
 
     @chat = Chat.create(:user => @user,:text => @text,:ts => @ts)
 
-    @current_archive.chats << @chat
 
+    @current_archive.chats << @chat
 
     if @current_archive.save
      # my_account is valid and has been saved
@@ -220,7 +220,7 @@ end
 get("/archive/:id") do
   @archive = Archive.get params[:id]
   puts 'archive id'
-  puts @archive.id
+  puts @archives
   puts "archive.chats"
   puts @archive.chats
 
