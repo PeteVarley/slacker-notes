@@ -224,5 +224,17 @@ get("/archive/:id") do
   puts "archive.chats"
   puts @archive.chats
 
+
+  @users = User.all
+
+  @users.each do |user|
+    user["slack_id"]
+    user["name"]
+    puts user["slack_id"]
+  end
+  puts @users
+
+
+
   erb(:archive)
 end

@@ -31,3 +31,7 @@ Add a one to one relation ship for users
 Chats name
 Chatterday Night Live
 Chatterday Night Fever
+
+____
+
+Users have many Chats, Chat only has one user
