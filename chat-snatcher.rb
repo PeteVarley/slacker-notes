@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/partial'
-require 'better_errors'
 require 'slack/client'
 require 'rubygems'
 require 'json'
