@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>Chat Archiver Archive</title>
     <link rel="stylesheet" href="/css/foundation.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <script src="js/vendor/modernizr.js"></script>
@@ -10,14 +10,13 @@
 <body>
 <div class="row">
 <div class="large-12 columns"><h1>Archive ID <%= @archive.id %></div>
-
   <div class="large-12 columns">
     <div class="panel">
       <% @archive.chats.reverse.each do |chat| %>
         <div class="hidden"><%= author = User.first(:slack_id => chat["user"]) %></div>
         <div id="message_author">
           <div class="author"><%= author["name"] %></div>
-          <div class="time_stamp"><%= chat["ts"]   %></div>
+          <div class="time_stamp"><%= chat["ts"] %></div>
         </div>
         <p><%= chat["text"] %></p>
       <% end %>

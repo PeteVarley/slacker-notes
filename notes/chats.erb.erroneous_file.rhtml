@@ -1,0 +1,25 @@
+<head>
+<style>
+.data {
+    background-color: blue;
+}
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+  <h1> <%= @messages_data.count %> chats have been saved</h1>
+
+  <% @messages_data.count.times do |x| %>
+
+    <div class="data"><%= message_content = @messages_data[x] %></div>
+
+      <p><%= message_content["user"]%></p>
+      <p><%= message_content["text"]%></p>
+
+      </br>
+  <% end %>
+
+<script>
+  $( ".data" ).remove();
+</script>
+</body>

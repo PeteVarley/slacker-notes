@@ -25,7 +25,6 @@ helpers do
 end
 
 def create_users
-  puts 'default record'
   @users = Record.last.users
 
   client = Slack::Client.new(token: SLACK_API_TOKEN)
@@ -34,24 +33,17 @@ def create_users
 
   @users_data = @users_data["members"]
 
-  @users_data.count.times do |x|
-    user_hash = @users_data[x]
+  @users_data.count.times do |user|
+    user_hash = @users_data[user]
 
     @slack_id = user_hash["id"]
-    puts "Here is the id"
-    puts @slack_id
 
     @name = user_hash["name"]
 
     @user = User.create(:slack_id => @slack_id, :name => @name)
-    puts "username"
-    puts @user.name
-    puts ":slack_id"
-    puts @user.slack_id
+
     @users << @user
-    puts @users.save
-    # @users.save
-    # puts @user.id
+
     if @users.save
       #valid
     else
@@ -66,23 +58,6 @@ def create_users
 
   end
 end
-
-#--------
-#   if @current_archive.save
-  #    # my_account is valid and has been saved
-  #   else
-  #     puts 'chats errors any'
-  #     puts @current_archive.chats.any? { |chat| chat.errors.any? }
-
-  #     @current_archive.chats.each do |chat|
-  #      chat.errors.each do |error|
-  #        p error
-  #      end
-  #    end
-  #  end
-#--------
-
-
 
 get "/" do
 
@@ -111,22 +86,17 @@ post "/chats" do
 
   number_param = params().fetch("number")
 
-  puts 'number'
   number = number_param[:chat_number]
-  p number
-
 
   client = Slack::Client.new(token: SLACK_API_TOKEN)
+
   @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
 
   @messages_data = @message_data["messages"]
 
+  @messages_data.count.times do |message|
 
-
-  @messages_data.count.times do |x|
-
-    message_hash = @messages_data[x]
-
+    message_hash = @messages_data[message]
 
     @user = message_hash["user"]
 
@@ -135,7 +105,6 @@ post "/chats" do
     @ts = message_hash["ts"]
 
     @chat = Chat.create(:user => @user,:text => @text,:ts => @ts)
-
 
     @current_archive.chats << @chat
 
@@ -218,22 +187,13 @@ end
 
 get("/archive/:id") do
   @archive = Archive.get params[:id]
-  puts 'archive id'
-  puts @archives
-  puts "archive.chats"
-  puts @archive.chats
-
 
   @users = User.all
 
   @users.each do |user|
     user["slack_id"]
     user["name"]
-    puts user["slack_id"]
   end
-  puts @users
-
-
 
   erb(:archive)
 end
