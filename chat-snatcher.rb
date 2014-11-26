@@ -238,3 +238,6 @@ get("/archive/:id") do
 
   erb(:archive)
 end
+
+create_record
+create_users

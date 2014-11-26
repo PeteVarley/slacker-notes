@@ -5,7 +5,7 @@ gem 'sinatra-partial'
 gem 'data_mapper'
 gem 'rake'
 gem 'faker'
-gem 'slack-client', :path => "/Users/petevarley/Desktop/code_union/code_union/slack-client/slack-client-0.0.1.gem"
+gem 'slack-client'
 gem 'json'
 
 group :development do
@@ -19,6 +19,6 @@ group :development do
 end
 
 group :production do
-  gem 'dm-postgres-adapter'
   gem 'pg'
+  gem 'dm-postgres-adapter'
 end
