@@ -23,13 +23,13 @@ end
 
 def create_users
 
-  p "****************************"
-  p client.users.list
-  p "****************************"
-
   @users = Record.last.users
 
   client = Slack::Client.new(token: SLACK_API_TOKEN)
+
+  p "****************************"
+  p client.users.list
+  p "****************************"
 
   puts 'client'
   puts client
