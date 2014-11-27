@@ -8,7 +8,6 @@ require 'json'
 require_relative 'config/dotenv'
 require_relative 'models'
 
-Dotenv.load
 
 SLACK_API_TOKEN=ENV["SLACK"]
 

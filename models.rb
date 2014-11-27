@@ -24,7 +24,6 @@ class User
   property :first_name, String
   property :last_name, String
 
-  #has n, :chats needst to be fixed
   belongs_to :record
 
 end
