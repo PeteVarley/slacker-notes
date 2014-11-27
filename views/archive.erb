@@ -18,7 +18,14 @@
           <div class="author"><%= author["name"] %></div>
           <div class="time_stamp"><%= chat["ts"] %></div>
         </div>
-        <p><%=h chat["text"] %></p>
+        <% emoticon = chat["text"] %>
+
+        <% if /:simple_smile:/.match(emoticon) %>
+          <span class="emoji emoji-sizer" style="background-image:url(https://slack.global.ssl.fastly.net/26648/img/emoji/simple_smile.png)" title="simple_smile">:simple_smile:</span>
+        <% else %>
+          <p><%= h chat["text"] %></p>
+        <% end %>
+
       <% end %>
     </div>
   </div>
