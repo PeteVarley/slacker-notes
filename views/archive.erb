@@ -18,7 +18,7 @@
           <div class="author"><%= author["name"] %></div>
           <div class="time_stamp"><%= chat["ts"] %></div>
         </div>
-        <p><%= chat["text"] %></p>
+        <p><%=h chat["text"] %></p>
       <% end %>
     </div>
   </div>
