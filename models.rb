@@ -2,7 +2,15 @@ require 'data_mapper'
 
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper.setup(:default, ENV['DATABASE_URL'])
+if ENV['RACK_ENV'] != "production"
+  require 'dotenv'
+  Dotenv.load('.env')
+  DataMapper.setup(:default, "sqlite:wall.db")
+end
+
+if ENV['RACK_ENV'] == "production"
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
 
 class Record
   include DataMapper::Resource

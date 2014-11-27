@@ -4,8 +4,6 @@ require 'slack/client'
 require 'rubygems'
 require 'json'
 
-
-require_relative 'config/dotenv'
 require_relative 'models'
 
 
