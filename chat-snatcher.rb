@@ -26,6 +26,9 @@ def create_users
 
   client = Slack::Client.new(token: SLACK_API_TOKEN)
 
+  puts 'client'
+  puts client
+
   @users_data = JSON.parse(client.users.list)
   puts 'user list'
   p client.users.list
