@@ -7,6 +7,8 @@ require 'json'
 require_relative 'models'
 
 
+SLACK_API_TOKEN=ENV["SLACK"]
+
 def create_record
     r = Record.new
     r.name = "Big"
