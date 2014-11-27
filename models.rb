@@ -1,4 +1,5 @@
 require 'data_mapper'
+require 'dm-timestamps'
 
 DataMapper::Logger.new($stdout, :debug)
 
@@ -41,7 +42,7 @@ class Archive
 
   property :id, Serial
   property :name, String
-  property :ts, String
+  property :ts, DateTime
 
   belongs_to :record
   has n, :chats
