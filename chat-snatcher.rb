@@ -90,7 +90,12 @@ post "/chats" do
 
   @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
 
+  puts "message data"
+  puts @message_data
   @messages_data = @message_data["messages"]
+
+  puts "next message data pattern"
+  puts @messages_data
 
   @messages_data.count.times do |message|
 
@@ -101,6 +106,40 @@ post "/chats" do
     @text = message_hash["text"]
 
     @attachments = message_hash["attachments"]
+
+
+    puts "attachments"
+    puts @attachments.class
+    if @attachments.class == Array
+      @attachments.count.times do |attachment|
+        attach_hash = @attachments[attachment]
+
+        @title = attach_hash["title"]
+        puts "title"
+        puts @title
+        puts "title_link"
+        @title_link = attach_hash["title_link"]
+        puts @title_link
+        puts "attach text"
+        @attach_text = attach_hash["text"]
+        puts "fallback"
+        @fallback = attach_hash["fallback"]
+        puts @fallback
+        puts "thumb_url"
+        @thumb_url = attach_hash["thumb_url"]
+        puts @thumb_url
+        puts "from_url"
+        @from_url = attach_hash["from_url"]
+        puts @from_url
+        puts "thumb_width"
+        @thumb_width = attach_hash["thumb_width"]
+        puts @thumb_width
+        puts "thumb_height"
+        @thumb_height = attach_hash["thumb_height"]
+        puts @thumb_height
+
+      end
+    end
 
     @ts = message_hash["ts"]
 
