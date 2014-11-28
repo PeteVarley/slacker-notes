@@ -22,6 +22,11 @@ Snatches Slack Chat
 - [] Display URLs as clickable links
 - [] Display correct emoji's
 
+### v[0.3] Chat Snatcher Archive
+
+- [] Display time stamps in a readable manner
+- [] Display first and last name with chat like Slack
+
 ### v[1.0] Chat Snatcher Archive
 
 - [ ] Use Slack OAuth to limit access to Chat Snatcher pages
