@@ -15,10 +15,12 @@ Snatches Slack Chat
 
 - [X] User information from Slack Channel is available to Chat Snatcher
 - [X] All Users in this channel are listed on a specified URL /users
+- [X] Add Foundation CSS
 
 ### v[0.2] Chat Snatcher Archive
 
-- [] Make pretty
+- [] Display URLs as clickable links
+- [] Display correct emoji's
 
 ### v[1.0] Chat Snatcher Archive
 
