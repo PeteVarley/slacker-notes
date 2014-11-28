@@ -13,12 +13,12 @@ Snatches Slack Chat
 
 ### v[0.1] Chat Snatcher Archive
 
-- [ ] User information from Slack Channel is available to Chat Snatcher
-- [ ] All Users in this channel are listed on a specified URL /users
+- [X] User information from Slack Channel is available to Chat Snatcher
+- [X] All Users in this channel are listed on a specified URL /users
 
 ### v[0.2] Chat Snatcher Archive
 
-- [ ] Make pretty
+- [] Make pretty
 
 ### v[1.0] Chat Snatcher Archive
 
