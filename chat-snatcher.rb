@@ -143,7 +143,7 @@ post "/chats" do
 
     @ts = message_hash["ts"]
 
-    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments)
+    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
 
     @current_archive.chats << @chat
 

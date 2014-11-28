@@ -56,6 +56,16 @@ class Chat
   property :text, Text
   property :attachments, Text
   property :ts, Text
+  property :attachments, Text
+  property :title, Text
+  property :title_link, Text, { :format => :url }
+  property :attach_text, Text
+  property :fallback, Text
+  property :thumb_url, Text, { :format => :url }
+  property :from_url, Text, { :format => :url }
+  property :thumb_width, Text
+  property :thumb_height, Text
+
 
   belongs_to :archive
 end

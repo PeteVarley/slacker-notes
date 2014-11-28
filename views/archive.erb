@@ -29,7 +29,11 @@
           <p><%= h chat["text"] %></p>
         <% end %>
 
-        <%= chat["attachments"] %>
+        <p><%= chat["attachments"] %></p>
+        <% attachment = chat["attachments"]%>
+        <p><%= attachment %></p>
+
+
 
       <% end %>
     </div>
