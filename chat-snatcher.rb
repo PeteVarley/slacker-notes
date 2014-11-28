@@ -100,9 +100,11 @@ post "/chats" do
 
     @text = message_hash["text"]
 
+    @attachments = message_hash["attachments"]
+
     @ts = message_hash["ts"]
 
-    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts)
+    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments)
 
     @current_archive.chats << @chat
 
