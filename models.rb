@@ -54,7 +54,8 @@ class Chat
   property :id, Serial
   property :user, Text
   property :text, Text
-  property :ts, Text
+  property :attachments, Text
+  property :ts, DateTime
 
   belongs_to :archive
 end
