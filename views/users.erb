@@ -14,6 +14,8 @@
         <% @users.each do |user| %>
            <p><%= user["slack_id"] %></p>
            <p><%= user["name"] %></p>
+           <p><%= user["first_name"] %></p>
+           <p><%= user["last_name"] %></p>
 
         <% end %>
       </div>

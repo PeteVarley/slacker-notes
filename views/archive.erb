@@ -15,7 +15,7 @@
       <% @archive.chats.reverse.each do |chat| %>
         <div class="hidden"><%= author = User.first(:slack_id => chat["user"]) %></div>
         <div id="message_author">
-          <div class="author"><%= author["name"] %></div>
+          <div class="author"><%= author["first_name"] %> <%= author["last_name"] %></div>
           <div class="time_stamp"><%= chat["ts"] %></div>
         </div>
         <% chat_text = chat["text"] %>

@@ -34,11 +34,35 @@ def create_users
   @users_data.count.times do |user|
     user_hash = @users_data[user]
 
+
+    p "******************"
+    p user_hash
+    p "*******************"
+
+
     @slack_id = user_hash["id"]
 
     @name = user_hash["name"]
+    puts "*********"
+    puts "name"
+    puts @name
 
-    @user = User.create(:slack_id => @slack_id, :name => @name)
+    @profile = user_hash["profile"]
+    puts "*********"
+    puts "profile"
+    puts @profile
+
+    @first_name = @profile["first_name"]
+    puts "*********"
+    puts "first name"
+    puts @first_name
+
+    @last_name = @profile["last_name"]
+    puts "*********"
+    puts "last name"
+    puts @last_name
+
+    @user = User.create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name)
 
     @users << @user
 
@@ -63,7 +87,12 @@ get "/" do
 end
 
 get("/users") do
-  @users = default_record.users
+  @users = Record.last.users
+
+
+  p "******************"
+  p @users
+  p "******************"
 
   erb :users
 end
