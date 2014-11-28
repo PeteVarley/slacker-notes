@@ -29,10 +29,14 @@
           <p><%= h chat["text"] %></p>
         <% end %>
 
-        <p><%= chat["attachments"] %></p>
-        <% attachment = chat["attachments"]%>
-        <p><%= attachment %></p>
-
+        <p><%= chat["title"] %></p>
+        <p><%= chat["title_link"] %></p>
+        <p><%= chat["attach_text"] %></p>
+        <p><%= chat["fallback"] %></p>
+        <p><%= chat["thumb_url"] %></p>
+        <p><%= chat["from_url"] %></p>
+        <p><%= chat["thumb_width"] %></p>
+        <p><%= chat["thumb_height"] %></p>
 
 
       <% end %>
