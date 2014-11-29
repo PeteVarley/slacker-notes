@@ -49,7 +49,9 @@
               </div>
               <div class="attachment_thumb">
                 <a href=<%= chat["from_url"] %>>
-                  <img src=<%= chat["thumb_url"] %> style="width:75px; height:75px;">
+                  <% if chat["thumb_url"] != nil %>
+                    <img src=<%= chat["thumb_url"] %> style="width:75px; height:75px;">
+                  <% end %>
                 </a>
               </div>
             </div>
