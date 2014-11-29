@@ -13,30 +13,39 @@
   <div class="large-12 columns">
     <div class="panel">
       <% @archive.chats.reverse.each do |chat| %>
-        <div class="hidden"><%= author = User.first(:slack_id => chat["user"]) %></div>
-        <div id="message_author">
-          <div class="author"><%= author["first_name"] %> <%= author["last_name"] %></div>
-          <div class="time_stamp"><%= chat["ts"] %></div>
+        <% author = User.first(:slack_id => chat["user"]) %>
+        <div class="message_author">
+
+          <div class="author message_sender"><%= author["first_name"] %> <%= author["last_name"] %></div>
+
+          <% time_stamp = chat["ts"] %>
+
+          <div class="timestamp"><%= Time.at(time_stamp.to_i).strftime("%B %e, %Y at %I:%M %p") %></div>
+
         </div>
-        <% chat_text = chat["text"] %>
+        <div class="message">
+          <% chat_text = chat["text"] %>
 
-        <% if /:simple_smile:/.match(chat_text) %>
-          <span class="emoji emoji-sizer" style="background-image:url(https://slack.global.ssl.fastly.net/26648/img/emoji/simple_smile.png)" title="simple_smile">:simple_smile:</span>
-        <% elsif /(.*)http:(.*)/.match(chat_text)  %>
-          <div class="hidden"><%= url = /(?<=<).*?(?=(>))/.match(chat_text) %></div>
-          <a href="<%= url = /(?<=<).*?(?=(>))/.match(chat_text) %>"><%= url %></a>
-        <% else %>
-          <p><%= h chat["text"] %></p>
-        <% end %>
+          <% if /:simple_smile:/.match(chat_text) %>
+            <span class="emoji emoji-sizer" style="background-image:url(https://slack.global.ssl.fastly.net/26648/img/emoji/simple_smile.png)" title="simple_smile">:simple_smile:</span>
 
-        <p><%= chat["title"] %></p>
-        <p><%= chat["title_link"] %></p>
-        <p><%= chat["attach_text"] %></p>
-        <p><%= chat["fallback"] %></p>
-        <p><%= chat["thumb_url"] %></p>
-        <p><%= chat["from_url"] %></p>
-        <p><%= chat["thumb_width"] %></p>
-        <p><%= chat["thumb_height"] %></p>
+          <% elsif /(.*)http:(.*)/.match(chat_text)  %>
+            <% url = /(?<=<).*?(?=(>))/.match(chat_text) %></div>
+            <a href="<%= url = /(?<=<).*?(?=(>))/.match(chat_text) %>"><%= url %></a>
+            <div class="inline_attachment right_thumb_max_w">
+              <p><%= chat["title"] %></p>
+              <p><%= chat["title_link"] %></p>
+              <p><%= chat["attach_text"] %></p>
+              <p><%= chat["fallback"] %></p>
+              <p><%= chat["thumb_url"] %></p>
+              <p><%= chat["from_url"] %></p>
+              <p><%= chat["thumb_width"] %></p>
+              <p><%= chat["thumb_height"] %></p>
+            </div>>
+          <% else %>
+            <p><%= h chat["text"] %></p>
+          <% end %>
+        </div>
 
 
       <% end %>
