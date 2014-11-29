@@ -68,7 +68,7 @@ form.mini input[type="submit"] { float: right; }
 
 }
 
-.message_author {
+.message_container {
   overflow: hidden;
 }
 
@@ -111,6 +111,7 @@ a:hover {
 
 .message{
   padding:2;
+  float:left;
 }
 
 .timestamp {
@@ -167,6 +168,36 @@ img.emoji {
     width: 1em;
     height: 1em
 }
+
+.name_timestamp{
+  background: #EAEAEA;
+  margin-bottom: 8px;
+  float: left;
+  width: 800px;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+
+.large-11 {
+width: 100%;
+}
+
+
+.columns .archive{
+  position: relative;
+  float: left;
+  padding-left: 0px;
+}
+
+.profile_image{
+  float:left;
+  overflow:hidden;
+  padding-top: 8px
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; /* future proofing */
+
+}
 .author_link a{
   font-weight: 300;
 }
@@ -193,7 +224,7 @@ img.emoji {
   width:75%;
   overflow:hidden;
 }
-.content {
+.attachment_content {
   overflow:hidden;
 }
 .attachment_thumb{

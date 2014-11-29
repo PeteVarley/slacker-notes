@@ -1,73 +1,85 @@
 <html class="no-js" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat Archiver Archive</title>
-    <link rel="stylesheet" href="/css/foundation.css" />
-    <link rel="stylesheet" href="/css/main.css" />
-    <script src="js/vendor/modernizr.js"></script>
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Archiver Archive</title>
+  <link rel="stylesheet" href="/css/foundation.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <script src="js/vendor/modernizr.js"></script>
+</head>
 <body>
 <div class="row">
-<div class="large-12 columns"><h1>Archive ID <%= @archive.id %></div>
+  <div class="large-12 columns"><h1>Archive ID <%= @archive.id %></div>
   <div class="large-12 columns">
     <div class="panel">
       <% @archive.chats.reverse.each do |chat| %>
         <% author = User.first(:slack_id => chat["user"]) %>
-        <div class="message_author">
 
-          <div class="author message_sender"><%= author["first_name"] %> <%= author["last_name"] %></div>
-
-          <% time_stamp = chat["ts"] %>
-
-          <div class="timestamp"><%= Time.at(time_stamp.to_i).strftime("%B %e, %Y at %I:%M %p") %></div>
-
-        </div>
-        <div class="message">
-          <% chat_text = chat["text"] %>
-
-          <% if /:simple_smile:/.match(chat_text) %>
-            <span class="emoji emoji-sizer" style="background-image:url(https://slack.global.ssl.fastly.net/26648/img/emoji/simple_smile.png)" title="simple_smile">:simple_smile:</span>
-
-          <% elsif /(.*)http:(.*)/.match(chat_text)  %>
-            <% url = /(?<=<).*?(?=(>))/.match(chat_text) %></div>
-          <div class="author_link">
-            <a href="<%= url = /(?<=<).*?(?=(>))/.match(chat_text) %>"><%= url %></a>
-          </div>
-
-
-          <div class="inline_attachment_wrapper">
-            <div class="attachment_bar" style="background:#e3e4e6;">
-              <div class"shim"></div>
-            </div>
-            <div class="content">
-              <div class="attachment_title">
-                <a href="<%= chat["title_link"] %>"><%= chat["title"] %></a>
-              </div>
-              <div class="attachment_contents">
-                <%= chat["attach_text"] %>
-              </div>
-              <div class="attachment_thumb">
-                <a href=<%= chat["from_url"] %>>
-                  <% if chat["thumb_url"] != nil %>
-                    <img src=<%= chat["thumb_url"] %> style="width:75px; height:75px;">
-                  <% end %>
-                </a>
+          <div class="message_container">
+            <div class="small-1 large-1 columns">
+              <div class="profile_image">
+                <img src=<%= author["image_48"] %>>
               </div>
             </div>
+
+            <div class="name_timestamp">
+              <div class="small-11 large-11 columns archive">
+                <div class="author message_sender"><%= author["first_name"] %> <%= author["last_name"] %></div>
+
+                <% time_stamp = chat["ts"] %>
+
+                <div class="timestamp"><%= Time.at(time_stamp.to_i).strftime("%B %e, %Y at %I:%M %p") %></div>
+              </div>
+                <div class="message">
+                  <% chat_text = chat["text"] %>
+
+                  <% if /:simple_smile:/.match(chat_text) %>
+                    <span class="emoji emoji-sizer" style="background-image:url(https://slack.global.ssl.fastly.net/26648/img/emoji/simple_smile.png)" title="simple_smile">:simple_smile:</span>
+
+                  <% elsif /(.*)http:(.*)/.match(chat_text)  %>
+                  <% url = /(?<=<).*?(?=(>))/.match(chat_text) %>
+
+                  <div class="author_link">
+                    <a href="<%= url = /(?<=<).*?(?=(>))/.match(chat_text) %>"><%= url %></a>
+                  </div>
+
+
+                  <div class="inline_attachment_wrapper">
+                    <div class="attachment_bar" style="background:#e3e4e6;">
+                      <div class"shim"></div>
+                    </div>
+                    <div class="attachment_content">
+                      <div class="attachment_title">
+                        <a href="<%= chat["title_link"] %>"><%= chat["title"] %></a>
+                      </div>
+                      <div class="attachment_contents">
+                        <%= chat["attach_text"] %>
+                      </div>
+                      <div class="attachment_thumb">
+                        <a href=<%= chat["from_url"] %>>
+                          <% if chat["thumb_url"] != nil %>
+                            <img src=<%= chat["thumb_url"] %> style="width:75px; height:75px;">
+                          <% end %>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+
+                <% else %>
+                  <%= h chat["text"] %>
+                <% end %>
+                </div>
+            </div>
           </div>
 
-          <% else %>
-            <p><%= h chat["text"] %></p>
-          <% end %>
-        </div>
       <% end %>
     </div>
   </div>
 </div>
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/foundation.min.js"></script>
-    <script>
-      $(document).foundation();
-    </script>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
 </body>

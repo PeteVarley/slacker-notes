@@ -32,6 +32,14 @@ class User
   property :name, String
   property :first_name, String
   property :last_name, String
+  property :image_24, Text
+  property :image_32, Text
+  property :image_48, Text
+  property :image_72, Text
+  property :image_192, Text
+  property :image_original, Text
+  property :title, String
+  property :email, String
 
   belongs_to :record
 
