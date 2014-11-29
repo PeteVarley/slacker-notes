@@ -31,23 +31,34 @@
 
           <% elsif /(.*)http:(.*)/.match(chat_text)  %>
             <% url = /(?<=<).*?(?=(>))/.match(chat_text) %></div>
+          <div class="author_link">
             <a href="<%= url = /(?<=<).*?(?=(>))/.match(chat_text) %>"><%= url %></a>
-            <div class="inline_attachment right_thumb_max_w">
-              <p><%= chat["title"] %></p>
-              <p><%= chat["title_link"] %></p>
-              <p><%= chat["attach_text"] %></p>
-              <p><%= chat["fallback"] %></p>
-              <p><%= chat["thumb_url"] %></p>
-              <p><%= chat["from_url"] %></p>
-              <p><%= chat["thumb_width"] %></p>
-              <p><%= chat["thumb_height"] %></p>
-            </div>>
+          </div>
+
+
+          <div class="inline_attachment_wrapper">
+            <div class="attachment_bar" style="background:#e3e4e6;">
+              <div class"shim"></div>
+            </div>
+            <div class="content">
+              <div class="attachment_title">
+                <a href="<%= chat["title_link"] %>"><%= chat["title"] %></a>
+              </div>
+              <div class="attachment_contents">
+                <%= chat["attach_text"] %>
+              </div>
+              <div class="attachment_thumb">
+                <a href=<%= chat["from_url"] %>>
+                  <img src=<%= chat["thumb_url"] %> style="width:75px; height:75px;">
+                </a>
+              </div>
+            </div>
+          </div>
+
           <% else %>
             <p><%= h chat["text"] %></p>
           <% end %>
         </div>
-
-
       <% end %>
     </div>
   </div>

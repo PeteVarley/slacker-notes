@@ -167,6 +167,39 @@ img.emoji {
     width: 1em;
     height: 1em
 }
+.author_link a{
+  font-weight: 300;
+}
+.inline_attachment_wrapper{
+  overflow: hidden;
+}
+.shim {
+  width:4px;
+}
+.attachment_bar {
+  width:4px;
+  float: left;
+  height: 80px;
+}
+.attachment_title{
+  padding-left: 8px;
+  float: left;
+  font-size: 16px;
+  font-weight: 600;
+}
+.attachment_contents{
+  padding-left: 8px;
+  float:left;
+  width:75%;
+  overflow:hidden;
+}
+.content {
+  overflow:hidden;
+}
+.attachment_thumb{
+  width:25%;
+  overflow:hidden;
+}
 
 /* Users section */
 .users li { margin-bottom: 2.5em; }
