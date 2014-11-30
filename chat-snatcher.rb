@@ -125,10 +125,10 @@ end
 #   end
 # end
 
-# get "/" do
+get "/" do
 
-#   erb :home
-# end
+  erb :home
+end
 
 get("/users") do
   @users = Record.last.users

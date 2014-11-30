@@ -40,6 +40,8 @@ class User
   property :image_original, Text
   property :title, String
   property :email, String
+  property :updated_at, DateTime
+  property :created_at, DateTime
 
   belongs_to :record
 
