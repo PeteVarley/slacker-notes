@@ -1,4 +1,3 @@
-require_relative './models'
 require_relative 'chat-snatcher.rb'
 require 'json'
 
