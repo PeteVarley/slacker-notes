@@ -13,7 +13,7 @@ if ENV['RACK_ENV'] == "production"
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
-class Record
+class Channel
   include DataMapper::Resource
 
   property :id, Serial
@@ -43,7 +43,7 @@ class User
   property :updated_at, DateTime
   property :created_at, DateTime
 
-  belongs_to :record
+  belongs_to :channel
 
 end
 
@@ -54,7 +54,7 @@ class Archive
   property :name, String
   property :ts, DateTime
 
-  belongs_to :record
+  belongs_to :channel
   has n, :chats
 end
 

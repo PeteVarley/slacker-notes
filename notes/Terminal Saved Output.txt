@@ -5,8 +5,8 @@ LoadError: cannot load such file -- chat-snatcher.rb
 	from (irb):1:in `load'
 	from (irb):1
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
-2.1.2 :002 > 
-2.1.2 :003 >   
+2.1.2 :002 >
+2.1.2 :003 >
 2.1.2 :004 >   load chat-snatcher.rb
 NameError: undefined local variable or method `chat' for main:Object
 	from (irb):4
@@ -45,11 +45,11 @@ code_union/                    photo-gallery-cli/             web-fundamentals-w
 Peter-Varleys-MacBook-Pro:code_union petevarley$ cd chat-snatcher
 Peter-Varleys-MacBook-Pro:chat-snatcher petevarley$ irb
 2.1.2 :001 > load 'chat-snatcher.rb'
- => true 
-2.1.2 :002 > r = Record.get([3])
- => #<Record @id=3 @name="Varley2" @website=nil> 
+ => true
+2.1.2 :002 > r = Channel.get([3])
+ => #<Channel @id=3 @name="Varley2" @website=nil>
 2.1.2 :003 > Slack::Client.new(token: SLACK_API_TOKEN)
- => #<Slack::Client:0x007ff7bd77de38 @token="xoxp-2474668307-2772147500-2999742258-557756", @channels=#<Slack::API::Channels:0x007ff7bd77dde8 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @im=#<Slack::API::IM:0x007ff7bd77dd98 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @users=#<Slack::API::Users:0x007ff7bd77dd48 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>> 
+ => #<Slack::Client:0x007ff7bd77de38 @token="xoxp-2474668307-2772147500-2999742258-557756", @channels=#<Slack::API::Channels:0x007ff7bd77dde8 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @im=#<Slack::API::IM:0x007ff7bd77dd98 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @users=#<Slack::API::Users:0x007ff7bd77dd48 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>>
 2.1.2 :004 > client.channels.history(:channel=>'C02DYLCQB',:count=>1)
 NameError: undefined local variable or method `client' for main:Object
 	from (irb):4
@@ -59,9 +59,9 @@ NameError: undefined local variable or method `client' for main:Object
 	from (irb):5
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
 2.1.2 :006 > client = Slack::Client.new(token: SLACK_API_TOKEN)
- => #<Slack::Client:0x007ff7bd734620 @token="xoxp-2474668307-2772147500-2999742258-557756", @channels=#<Slack::API::Channels:0x007ff7bd734878 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @im=#<Slack::API::IM:0x007ff7bd735340 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @users=#<Slack::API::Users:0x007ff7bd735930 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>> 
+ => #<Slack::Client:0x007ff7bd734620 @token="xoxp-2474668307-2772147500-2999742258-557756", @channels=#<Slack::API::Channels:0x007ff7bd734878 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @im=#<Slack::API::IM:0x007ff7bd735340 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @users=#<Slack::API::Users:0x007ff7bd735930 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>>
 2.1.2 :007 > client
- => #<Slack::Client:0x007ff7bd734620 @token="xoxp-2474668307-2772147500-2999742258-557756", @channels=#<Slack::API::Channels:0x007ff7bd734878 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @im=#<Slack::API::IM:0x007ff7bd735340 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @users=#<Slack::API::Users:0x007ff7bd735930 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>> 
+ => #<Slack::Client:0x007ff7bd734620 @token="xoxp-2474668307-2772147500-2999742258-557756", @channels=#<Slack::API::Channels:0x007ff7bd734878 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @im=#<Slack::API::IM:0x007ff7bd735340 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>, @users=#<Slack::API::Users:0x007ff7bd735930 @default_args={:token=>"xoxp-2474668307-2772147500-2999742258-557756"}>>
 2.1.2 :008 > client.channels.history(:channel=>'C02DYLCQB',:count=>1)
 Faraday::ConnectionFailed: getaddrinfo: nodename nor servname provided, or not known
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/net/http.rb:879:in `initialize'
@@ -84,49 +84,49 @@ Faraday::ConnectionFailed: getaddrinfo: nodename nor servname provided, or not k
 	from /Users/petevarley/.rvm/gems/ruby-2.1.2/gems/slack-client-0.0.1/lib/slack/api/channels.rb:13:in `history'
 	from (irb):8
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'2.1.2 :009 > client.channels.history(:channel=>'C02DYLCQB',:count=>1)
- => "{\"ok\":true,\"messages\":[{\"type\":\"message\",\"user\":\"U02E2LZEC\",\"text\":\":satisfied:\",\"ts\":\"1415930111.000107\"}],\"has_more\":true,\"is_limited\":false}" 
+ => "{\"ok\":true,\"messages\":[{\"type\":\"message\",\"user\":\"U02E2LZEC\",\"text\":\":satisfied:\",\"ts\":\"1415930111.000107\"}],\"has_more\":true,\"is_limited\":false}"
 2.1.2 :010 > client.channels.history(:channel=>'C02DYLCQB',:count=>1)
- => "{\"ok\":true,\"messages\":[{\"type\":\"message\",\"user\":\"U02E2LZEC\",\"text\":\":satisfied:\",\"ts\":\"1415930111.000107\"}],\"has_more\":true,\"is_limited\":false}" 
+ => "{\"ok\":true,\"messages\":[{\"type\":\"message\",\"user\":\"U02E2LZEC\",\"text\":\":satisfied:\",\"ts\":\"1415930111.000107\"}],\"has_more\":true,\"is_limited\":false}"
 2.1.2 :011 > JSON.parse(client.channels.history(:channel=>'C02DYLCQB',:count=>1))
- => {"ok"=>true, "messages"=>[{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}], "has_more"=>true, "is_limited"=>false} 
+ => {"ok"=>true, "messages"=>[{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}], "has_more"=>true, "is_limited"=>false}
 2.1.2 :012 > parsed = JSON.parse(client.channels.history(:channel=>'C02DYLCQB',:count=>1))
- => {"ok"=>true, "messages"=>[{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}], "has_more"=>true, "is_limited"=>false} 
+ => {"ok"=>true, "messages"=>[{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}], "has_more"=>true, "is_limited"=>false}
 2.1.2 :013 > parsed
- => {"ok"=>true, "messages"=>[{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}], "has_more"=>true, "is_limited"=>false} 
+ => {"ok"=>true, "messages"=>[{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}], "has_more"=>true, "is_limited"=>false}
 2.1.2 :014 > parsed["type"]
- => nil 
+ => nil
 2.1.2 :015 > parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :016 > parsed["messages"].string
 NoMethodError: undefined method `string' for #<Array:0x007ff7be84ae78>
 	from (irb):16
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
 2.1.2 :017 > parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :018 > parsed["messages"].user
 NoMethodError: undefined method `user' for #<Array:0x007ff7be84ae78>
 	from (irb):18
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
 2.1.2 :019 > parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
-2.1.2 :020 > 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
+2.1.2 :020 >
 2.1.2 :021 >   parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :022 > parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :023 > parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :024 > parsed["messages"]["type"]
 TypeError: no implicit conversion of String into Integer
 	from (irb):24:in `[]'
 	from (irb):24
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
 2.1.2 :025 > parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :026 > p = parsed["messages"]
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :027 > p
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :028 > p["type"]
 TypeError: no implicit conversion of String into Integer
 	from (irb):28:in `[]'
@@ -138,7 +138,7 @@ TypeError: no implicit conversion of String into Integer
 2.1.2 :032?>   end
 {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}
 
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :033 > p.each do |key,value|
 2.1.2 :034 >     if key == "type"
 2.1.2 :035?>     n = Notes.new(:note_content=>value)
@@ -146,7 +146,7 @@ TypeError: no implicit conversion of String into Integer
 2.1.2 :037?>     r.save
 2.1.2 :038?>     end
 2.1.2 :039?>   end
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :040 > p.each do |key,value|
 2.1.2 :041 >     if key == "type"
 2.1.2 :042?>     n = Notes.new(:note_content=>value)
@@ -154,7 +154,7 @@ TypeError: no implicit conversion of String into Integer
 2.1.2 :044?>     r.save
 2.1.2 :045?>     end
 2.1.2 :046?>   end
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :047 > p n
 NameError: undefined local variable or method `n' for main:Object
 	from (irb):47
@@ -164,25 +164,25 @@ NameError: undefined local variable or method `n' for main:Object
 	from (irb):48
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
 2.1.2 :049 > p
- => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}] 
+ => [{"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}]
 2.1.2 :050 > p[0]
- => {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"} 
+ => {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}
 2.1.2 :051 > arr = p[0]
- => {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"} 
+ => {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}
 2.1.2 :052 > arr[0]
- => nil 
+ => nil
 2.1.2 :053 > arr(0)
 NoMethodError: undefined method `arr' for main:Object
 	from (irb):53
 	from /Users/petevarley/.rvm/rubies/ruby-2.1.2/bin/irb:11:in `<main>'
 2.1.2 :054 > arr
- => {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"} 
+ => {"type"=>"message", "user"=>"U02E2LZEC", "text"=>":satisfied:", "ts"=>"1415930111.000107"}
 2.1.2 :055 > arr["type"]
- => "message" 
+ => "message"
 2.1.2 :056 > n = Note.new(:note_content=>arr["type"])
- => #<Note @id=nil @note_title=nil @note_subjects=nil @note_time_stamp=nil @note_content="message" @record_id=nil> 
+ => #<Note @id=nil @note_title=nil @note_subjects=nil @note_time_stamp=nil @note_content="message" @Channel_id=nil>
 2.1.2 :057 > r.notes<< n
- => [#<Note @id=2 @note_title="train" @note_subjects="boring" @note_time_stamp=nil @note_content="nonnya" @record_id=3>, #<Note @id=3 @note_title="tunnel" @note_subjects="dark" @note_time_stamp=nil @note_content="nonnya" @record_id=3>, #<Note @id=4 @note_title="users" @note_subjects="list" @note_time_stamp=nil @note_content="client.users.list" @record_id=3>, #<Note @id=5 @note_title="users" @note_subjects="list" @note_time_stamp=nil @note_content="client.users.list" @record_id=3>, #<Note @id=6 @note_title="users" @note_subjects="list" @note_time_stamp=nil @note_content="Pete" @record_id=3>, #<Note @id=7 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dog" @record_id=3>, #<Note @id=8 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dog" @record_id=3>, #<Note @id=9 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dog" @record_id=3>, #<Note @id=10 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dood" @record_id=3>, #<Note @id=11 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="doggies" @record_id=3>, #<Note @id=12 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="doggies" @record_id=3>, #<Note @id=nil @note_title=nil @note_subjects=nil @note_time_stamp=nil @note_content="message" @record_id=3>] 
+ => [#<Note @id=2 @note_title="train" @note_subjects="boring" @note_time_stamp=nil @note_content="nonnya" @Channel_id=3>, #<Note @id=3 @note_title="tunnel" @note_subjects="dark" @note_time_stamp=nil @note_content="nonnya" @Channel_id=3>, #<Note @id=4 @note_title="users" @note_subjects="list" @note_time_stamp=nil @note_content="client.users.list" @Channel_id=3>, #<Note @id=5 @note_title="users" @note_subjects="list" @note_time_stamp=nil @note_content="client.users.list" @Channel_id=3>, #<Note @id=6 @note_title="users" @note_subjects="list" @note_time_stamp=nil @note_content="Pete" @Channel_id=3>, #<Note @id=7 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dog" @Channel_id=3>, #<Note @id=8 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dog" @Channel_id=3>, #<Note @id=9 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dog" @Channel_id=3>, #<Note @id=10 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="dood" @Channel_id=3>, #<Note @id=11 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="doggies" @Channel_id=3>, #<Note @id=12 @note_title="db save?" @note_subjects="next" @note_time_stamp=nil @note_content="doggies" @Channel_id=3>, #<Note @id=nil @note_title=nil @note_subjects=nil @note_time_stamp=nil @note_content="message" @Channel_id=3>]
 2.1.2 :058 > r.save
- => true 
-2.1.2 :059 > 
+ => true
+2.1.2 :059 >

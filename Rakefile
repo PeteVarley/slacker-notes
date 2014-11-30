@@ -1,15 +1,15 @@
-require_relative 'chat-snatcher.rb'
+require_relative 'chat-archiver.rb'
 require 'json'
 
-task :create_record do
-  r = Record.new
+task :create_channel do
+  r = Channel.new
     r.name = "Big"
     r.save
 end
 
 task :create_users do
 
-  @users = Record.last.users
+  @users = Channel.last.users
   client = Slack::Client.new(token: SLACK_API_TOKEN)
   puts 'client'
   puts client
