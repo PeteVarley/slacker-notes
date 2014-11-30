@@ -10,10 +10,10 @@ require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
-def create_record
-    r = Record.new
-    r.name = "Big"
-    r.save
+class SlackUserImporter
+  def initialize(client)
+    @client = client
+  end
 end
 
 helpers do
@@ -22,110 +22,113 @@ helpers do
   end
 end
 
-def create_users
+# def create_users
 
-  @users = Record.last.users
+#   @users = Record.last.users
 
-  client = Slack::Client.new(token: SLACK_API_TOKEN)
+#   client = Slack::Client.new(token: SLACK_API_TOKEN)
 
-  @users_data = JSON.parse(client.users.list)
+#   puts 'client'
+#   puts client = Slack::Client.new(token: SLACK_API_TOKEN)
 
-  @users_data = @users_data["members"]
+#   @users_data = JSON.parse(client.users.list)
 
-  @users_data.count.times do |user|
-    user_hash = @users_data[user]
+#   @users_data = @users_data["members"]
 
-
-    p "******************"
-    p user_hash
-    p "*******************"
+#   @users_data.count.times do |user|
+#     user_hash = @users_data[user]
 
 
-    @slack_id = user_hash["id"]
+#     p "******************"
+#     p user_hash
+#     p "*******************"
 
-    @name = user_hash["name"]
-    puts "*********"
-    puts "name"
-    puts @name
 
-    @profile = user_hash["profile"]
-    puts "*********"
-    puts "profile"
-    puts @profile
+#     @slack_id = user_hash["id"]
 
-    @first_name = @profile["first_name"]
-    puts "*********"
-    puts "first name"
-    puts @first_name
+#     @name = user_hash["name"]
+#     puts "*********"
+#     puts "name"
+#     puts @name
 
-    @last_name = @profile["last_name"]
-    puts "*********"
-    puts "last name"
-    puts @last_name
+#     @profile = user_hash["profile"]
+#     puts "*********"
+#     puts "profile"
+#     puts @profile
 
-    @image_24 = @profile["image_24"]
-    puts "*********"
-    puts "image_24"
-    puts @image_24
+#     @first_name = @profile["first_name"]
+#     puts "*********"
+#     puts "first name"
+#     puts @first_name
 
-    @image_32 = @profile["image_32"]
-    puts "*********"
-    puts "image_32"
-    puts @image_32
+#     @last_name = @profile["last_name"]
+#     puts "*********"
+#     puts "last name"
+#     puts @last_name
 
-    @image_48 = @profile["image_48"]
-    puts "*********"
-    puts "image_48"
-    puts @image_48
+#     @image_24 = @profile["image_24"]
+#     puts "*********"
+#     puts "image_24"
+#     puts @image_24
 
-    @image_72 = @profile["image_72"]
-    puts "*********"
-    puts "image_72"
-    puts @image_72
+#     @image_32 = @profile["image_32"]
+#     puts "*********"
+#     puts "image_32"
+#     puts @image_32
 
-    @image_192 = @profile["image_192"]
-    puts "*********"
-    puts "image_192"
-    puts @image_192
+#     @image_48 = @profile["image_48"]
+#     puts "*********"
+#     puts "image_48"
+#     puts @image_48
 
-    @image_original = @profile["image_original"]
-    puts "*********"
-    puts "image_original"
-    puts @image_original
+#     @image_72 = @profile["image_72"]
+#     puts "*********"
+#     puts "image_72"
+#     puts @image_72
 
-    @title = @profile["title"]
-    puts "*********"
-    puts "title"
-    puts @title
+#     @image_192 = @profile["image_192"]
+#     puts "*********"
+#     puts "image_192"
+#     puts @image_192
 
-    @email = @profile["email"]
-    puts "*********"
-    puts "email"
-    puts @email
+#     @image_original = @profile["image_original"]
+#     puts "*********"
+#     puts "image_original"
+#     puts @image_original
 
-    @user = User.create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email)
+#     @title = @profile["title"]
+#     puts "*********"
+#     puts "title"
+#     puts @title
 
-    @users << @user
+#     @email = @profile["email"]
+#     puts "*********"
+#     puts "email"
+#     puts @email
 
-    if @users.save
-      #valid
-    else
-      puts 'user save errors any'
-      @users.any? { |user| user.errors.any? }
-      @users.each do |user|
-        user.errors.each do |user|
-          p user
-        end
-      end
-    end
+#     @user = User.create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email)
 
-  end
-end
+#     @users << @user
 
-get "/" do
+#     if @users.save
+#       #valid
+#     else
+#       puts 'user save errors any'
+#       @users.any? { |user| user.errors.any? }
+#       @users.each do |user|
+#         user.errors.each do |user|
+#           p user
+#         end
+#       end
+#     end
 
-  erb :home
-end
+#   end
+# end
+
+# get "/" do
+
+#   erb :home
+# end
 
 get("/users") do
   @users = Record.last.users
@@ -306,6 +309,3 @@ get("/archive/:id") do
 
   erb(:archive)
 end
-
-create_record
-create_users
