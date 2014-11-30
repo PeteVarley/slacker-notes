@@ -107,11 +107,10 @@ task :create_users do
     puts '@user'
     puts @user.class
 
-      @created_at = time
-      puts "*********"
-      puts "created at"
-      puts @created_at
-
+    @created_at = time
+    puts "*********"
+    puts "created at"
+    puts @created_at
 
 
       @user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:created_at => @created_at)
