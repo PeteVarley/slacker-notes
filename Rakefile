@@ -1,13 +1,15 @@
 require_relative 'chat-archiver.rb'
 require 'json'
 
+channel_name = "Web-fundamentals"
+
+
 task :create_channel do
-  r = Channel.new
-    r.name = "Big"
-    r.save
+  create_channel(channel_name)
 end
 
 task :create_users do
+
 
   @users = Channel.last.users
   client = Slack::Client.new(token: SLACK_API_TOKEN)

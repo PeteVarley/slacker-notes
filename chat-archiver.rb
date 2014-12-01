@@ -10,6 +10,12 @@ require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
+def create_channel(argument)
+  channel = Channel.new
+  channel.name = argument
+  channel.save
+
+end
 
 helpers do
   def default_channel
