@@ -10,7 +10,6 @@ end
 
 task :create_users do
 
-
   @users = Channel.last.users
   client = Slack::Client.new(token: SLACK_API_TOKEN)
   puts 'client'
