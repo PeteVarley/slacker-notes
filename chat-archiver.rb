@@ -17,6 +17,7 @@ end
 
 def sync_slack_clients(client)
   @users_data = JSON.parse(client.users.list)
+  @member_data = @users_data["members"]
 end
 
 

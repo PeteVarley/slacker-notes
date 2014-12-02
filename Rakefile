@@ -15,17 +15,15 @@ task :create_users do
 
   sync_slack_clients(client)
 
-  @user_data
 
-  @user_data = @users_data["members"]
-  puts @user_data
+  puts @member_data
 
-  @user_data.count
+  @member_data.count
   puts "User data count"
-  puts @user_data.count
+  puts @member_data.count
 
-  @user_data.count.times do |user|
-    user_hash = @user_data[user]
+  @member_data.count.times do |user|
+    user_hash = @member_data[user]
 
     p 'user'
     p user
