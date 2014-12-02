@@ -15,6 +15,11 @@ def create_channel(argument)
   channel.save
 end
 
+def sync_slack_clients(client)
+  @users_data = JSON.parse(client.users.list)
+end
+
+
 helpers do
   def default_channel
     @default_channel ||= Channel.last

@@ -12,12 +12,23 @@ task :create_users do
 
   @users = Channel.last.users
   client = Slack::Client.new(token: SLACK_API_TOKEN)
+
   puts 'client'
   puts client
 
-  @users_data = JSON.parse(client.users.list)
-  puts 'users_data'
-  puts @users_data
+  p "**********"
+  p sync_slack_clients(client)
+  p "**********"
+
+  sync_slack_clients(client)
+  # @users_data = JSON.parse(client.users.list)
+  # puts 'users_data'
+  # puts @users_data
+
+  p "*********"
+  @user_data
+  p "*********"
+
 
   @user_data = @users_data["members"]
   puts @user_data
