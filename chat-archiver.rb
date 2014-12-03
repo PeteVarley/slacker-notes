@@ -45,7 +45,7 @@ get("/users") do
 end
 
 get "/archives" do
-  @archives = default_channel.archives
+  @archives = Channel.last.archives
 
   erb :archives
 end
