@@ -10,9 +10,10 @@ require_relative 'models'
 SLACK_API_TOKEN=ENV["SLACK"]
 
 def create_channel(argument)
-  channel = Channel.new
+  channel = Channel.first_or_create('web-fundamentals')
   channel.name = argument
   channel.save
+
 end
 
 def sync_slack_clients(client)
