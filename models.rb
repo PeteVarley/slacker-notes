@@ -3,10 +3,10 @@ require 'dm-timestamps'
 
 DataMapper::Logger.new($stdout, :debug)
 
-if ENV['RACK_ENV'] != "production"
+if ENV['RACK_ENV'] != "development"
   require 'dotenv'
   Dotenv.load('.env')
-  DataMapper.setup(:default, "sqlite:wall.db")
+  DataMapper.setup(:default, "sqlite:chat_archiver.db")
 end
 
 if ENV['RACK_ENV'] == "production"
