@@ -3,7 +3,7 @@ require 'dm-timestamps'
 
 DataMapper::Logger.new($stdout, :debug)
 
-if ENV['RACK_ENV'] != "development"
+if ENV['RACK_ENV'] != "production"
   require 'dotenv'
   Dotenv.load('.env')
   DataMapper.setup(:default, "sqlite:chat_archiver.db")
