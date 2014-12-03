@@ -13,12 +13,70 @@ def create_channel(argument)
   channel = Channel.first_or_create
   channel.name = argument
   channel.save
-
 end
 
 def sync_slack_clients(client)
   @users_data = JSON.parse(client.users.list)
-  @member_data = @users_data["members"]
+  @members = @users_data["members"]
+
+  user_data_hash(@members)
+end
+
+def user_data_hash(member_data)
+  member_data.count.times do |user|
+    user_hash = member_data[user]
+
+      @slack_id = user_hash["id"]
+
+      @name = user_hash["name"]
+
+      @profile = user_hash["profile"]
+
+      @first_name = @profile["first_name"]
+
+      @last_name = @profile["last_name"]
+
+      @image_24 = @profile["image_24"]
+
+      @image_32 = @profile["image_32"]
+
+      @image_48 = @profile["image_48"]
+
+      @image_72 = @profile["image_72"]
+
+      @image_192 = @profile["image_192"]
+
+      @image_original = @profile["image_original"]
+
+      @title = @profile["title"]
+
+      @email = @profile["email"]
+
+      time = Time.now
+
+      @updated_at = time
+
+      user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
+
+      update_or_create_users(user)
+  end
+end
+
+def update_or_create_users(argument)
+
+  @users << argument
+
+  if @users.save
+    #cool
+  else
+    puts 'user save errors any'
+    @users.any? { |user| user.errors.any? }
+    @users.each do |user|
+      user.errors.each do |user|
+        p user
+      end
+    end
+  end
 end
 
 

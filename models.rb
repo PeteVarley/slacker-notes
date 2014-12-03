@@ -53,7 +53,6 @@ class Archive
   property :id, Serial
   property :name, String
   property :ts, DateTime
-
   belongs_to :channel
   has n, :chats
 end
