@@ -1,4 +1,4 @@
-require('./chat-snatcher')
+require('./chat-archiver')
 
 run Sinatra::Application
 # `run` is a method provided by `rack` to run web applications.
