@@ -51,7 +51,7 @@ get "/archives" do
 end
 
 post "/chats" do
-  @archives = default_channel.archives
+  @archives = Channel.last.archives
   @current_archive = Archive.create(:ts => Time.now)
   @archives << @current_archive
   @archives.save
