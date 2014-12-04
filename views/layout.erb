@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Archiver</title>
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/foundation.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <script src="js/vendor/modernizr.js"></script>
+</head>
+<body>
+
+  <%= yield %>
+
+
+  <!-- Load jQuery version 1.11.1 (uncompressed) -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <!-- Load own scripts -->
+  <%#<script type="text/javascript" src="/js/jobs.js"></script>
+  <script type="text/javascript" src="/js/skills.js"></script>
+  <script type="text/javascript" src="/js/schools.js"></script>%>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script>
+   $(document).foundation();
+  </script>
+
+</body>
+<html>
