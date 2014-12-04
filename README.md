@@ -15,7 +15,7 @@ Snatches Slack Chat
 
 - [X] Basic user information from Slack Channel is available to Chat Snatcher
 - [X] All Users in this channel are listed on a specified URL /users
-- [X] Add Foundation CSS
+- [X] Add Foundation CSSs
 
 ### v[0.2] Chat Archiver
 
@@ -24,8 +24,8 @@ Snatches Slack Chat
 
 ### v[0.3] Chat Snatcher Archive
 
-- [X] Display time stamps in a readable manner on /chats page
-- [ ] Display time stamps in a readable manner on / home page
+- [X] Display time stamps in a readable manner on /chats
+- [ ] Display time stamps in a readable manner on /archives
 - [X] Display first and last name with chat like Slack
 
 ### v[0.4] Chat Snatcher Archive
