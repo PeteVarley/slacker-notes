@@ -25,7 +25,7 @@ Snatches Slack Chat
 ### v[0.3] Chat Snatcher Archive
 
 - [X] Display time stamps in a readable manner on /chats
-- [ ] Display time stamps in a readable manner on /archives
+- [X] Display time stamps in a readable manner on /archives
 - [X] Display first and last name with chat like Slack
 
 ### v[0.4] Chat Snatcher Archive
