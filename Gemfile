@@ -5,7 +5,6 @@ gem 'sinatra'
 gem 'sinatra-partial'
 gem 'data_mapper'
 gem 'rake'
-gem 'faker'
 gem 'slack-client'
 gem 'json'
 

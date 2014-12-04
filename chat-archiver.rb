@@ -5,6 +5,8 @@ require 'rubygems'
 require 'json'
 require 'date'
 
+set :partial_template_engine, :erb
+
 require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
