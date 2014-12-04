@@ -25,18 +25,18 @@ Snatches Slack Chat
 ### v[0.3] Chat Snatcher Archive
 
 - [X] Display time stamps in a readable manner on /chats page
-- [] Display time stamps in a readable manner on / home page
+- [ ] Display time stamps in a readable manner on / home page
 - [X] Display first and last name with chat like Slack
 
 ### v[0.4] Chat Snatcher Archive
 
-- [] Add note taking capability to each archived chat
+- [ ] Add note taking capability to each archived chat
 
 ### v[0.5] Chat Snatcher Archive
 
-- [] Display correct emoji's
+- [ ] Display correct emoji's
 
 ### v[1.0] Chat Snatcher Archive
 
-- [] Slack OAuth allows users to sign up and access their Slack Channels
+- [ ] Slack OAuth allows users to sign up and access their Slack Channels
 
