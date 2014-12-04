@@ -31,9 +31,12 @@ Snatches Slack Chat
 ### v[0.4] Chat Snatcher Archive
 
 - [ ] Add note taking capability to each archived chat
+- [ ] Add links to Archives and Users on home page
 
 ### v[0.5] Chat Snatcher Archive
 
+- [ ] Add first and last name to Users page
+- [ ] Add profile picture to Users page
 - [ ] Display correct emoji's
 
 ### v[1.0] Chat Snatcher Archive
