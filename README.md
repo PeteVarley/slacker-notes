@@ -5,29 +5,38 @@ Snatches Slack Chat
 
 ## Releases
 
-### v[0.0] Chat Snatcher Archive Protoype
+### v[0.0] Chat Archiver Protoype
 
 - [x] User can archive chats they find memorable up to 100 messages at a time
 - [x] User can view these chats at a specified URL
 - [x] User can view a list of all chat archives
 
-### v[0.1] Chat Snatcher Archive
+### v[0.1] Chat Archiver Archives
 
-- [X] User information from Slack Channel is available to Chat Snatcher
+- [X] Basic user information from Slack Channel is available to Chat Snatcher
 - [X] All Users in this channel are listed on a specified URL /users
 - [X] Add Foundation CSS
 
-### v[0.2] Chat Snatcher Archive
+### v[0.2] Chat Archiver
 
-- [] Display URLs as clickable links
-- [] Display correct emoji's
+- [X] Display URLs attached to a Slack message as an clickable links
+- [X] Diplay profile pictures appropriately with each message
 
 ### v[0.3] Chat Snatcher Archive
 
-- [] Display time stamps in a readable manner
-- [] Display first and last name with chat like Slack
+- [X] Display time stamps in a readable manner on /chats page
+- [] Display time stamps in a readable manner on / home page
+- [X] Display first and last name with chat like Slack
+
+### v[0.4] Chat Snatcher Archive
+
+- [] Add note taking capability to each archived chat
+
+### v[0.5] Chat Snatcher Archive
+
+- [] Display correct emoji's
 
 ### v[1.0] Chat Snatcher Archive
 
-- [ ] Use Slack OAuth to limit access to Chat Snatcher pages
+- [] Slack OAuth allows users to sign up and access their Slack Channels
 

@@ -108,6 +108,19 @@ get "/archives" do
   erb :archives
 end
 
+get("/archive/:id") do
+  @archive = Archive.get params[:id]
+
+  @users = User.all
+
+  @users.each do |user|
+    user["slack_id"]
+    user["name"]
+  end
+
+  erb(:archive)
+end
+
 post "/chats" do
   @archives = Channel.last.archives
   @current_archive = Archive.create(:ts => Time.now)
@@ -256,17 +269,4 @@ post "/chats/:num" do
   #   redirect "/"
   # end
   erb(:chats)
-end
-
-get("/archive/:id") do
-  @archive = Archive.get params[:id]
-
-  @users = User.all
-
-  @users.each do |user|
-    user["slack_id"]
-    user["name"]
-  end
-
-  erb(:archive)
 end

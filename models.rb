@@ -55,6 +55,7 @@ class Archive
   property :ts, DateTime
   belongs_to :channel
   has n, :chats
+  has n, :notes
 end
 
 class Chat
