@@ -128,7 +128,7 @@ a:hover {
   border-color: #d8d8d8;
   margin-bottom: 1.25rem;
   padding: 1.25rem;
-  background: #cadetblue;
+  background: cadetblue;
   color: #333333; }
   .panel > :first-child {
     margin-top: 0; }
