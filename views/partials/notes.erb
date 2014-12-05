@@ -1,12 +1,13 @@
 <div class="note">
   <form name="delete_note" action="/notes/<%= note.id %>" method="post" accept-charset="utf-8" class="float_right">
     <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete">
+    <input class="button alert tiny button" type="submit" value="Delete">
   </form>
   <a href="#" title="Edit note" class="js_edit_note float_right">Edit</a>
 
-
+  <div class="note_panel">
   <p><%= note.note_title %></p>
   <p><%= note.note_text %></p>
   <p><%= note.note_tags %></p>
+  </div>
 </div>
