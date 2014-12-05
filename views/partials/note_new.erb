@@ -1,3 +1,4 @@
+<div class="note_panel">
 <form name ="new_note" action="/notes" method="post" accept-charset="utf-8">
   <input type="hidden" name="archive_id" value="<%= @archive.id %>">
   <input type="text" name="note[note_title]" placeholder="Note title">
@@ -6,3 +7,4 @@
 
   <input class="button success" type="submit" value="Add note">
 </form>
+</div>
