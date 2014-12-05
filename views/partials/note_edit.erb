@@ -1,0 +1,17 @@
+<% if hidden%>
+  <form class="hidden" name="edit_note" action="/notes/<%= note.id %>" method="post" accept-charset="utf-8">
+<% else %>
+
+  <form name="edit_note" action="notes/<%= note.id %>" method="post" accept-charset="utf-8">
+<% end %>
+    <input type="hidden" name="_method" value="put">
+
+    <input type="text" name="note[note_title]" value="<%= note.note_title %>">
+
+    <input type="text" name="note[note_text]" value="<%= note.note_text %>">
+
+    <input type="text" name="note[note_tags]" value=" <%= note.note_tags %>">
+
+
+    <input type="submit" value="Save">
+  </form>

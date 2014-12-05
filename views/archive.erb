@@ -7,7 +7,20 @@
         <%= partial :'partials/chat_message', :locals => { :chat => chat } %>
     <% end %>
 
+
     </div>
+
+
+    <div class ="archive_notes">
+    <%@archive.notes.reverse.each do |note| %>
+      <li>
+        <%= partial :'partials/notes', :locals => { :note => note } %>
+        <%= partial :'partials/note_edit', :locals => { :note => note, :hidden => true } %>
+      </li>
+    <% end %>
+    </div>
+
+    <%= partial :'partials/note_new', :archive => @archive %>
   </div>
 </div>
   <script src="js/vendor/jquery.js"></script>

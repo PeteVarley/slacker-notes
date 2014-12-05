@@ -96,11 +96,6 @@ end
 get("/users") do
   @users = Channel.last.users
 
-
-  p "******************"
-  p @users
-  p "******************"
-
   erb :users
 end
 
@@ -125,6 +120,8 @@ end
 
 post "/chats" do
   @archives = Channel.last.archives
+  puts "@archives"
+  puts @archives
   @current_archive = Archive.create(:ts => Time.now)
   @archives << @current_archive
   @archives.save
@@ -217,6 +214,69 @@ post "/chats" do
     redirect "/archive/#{@current_archive.id}"
   else
     redirect "/"
+  end
+end
+
+post "/notes" do
+
+  note_attrs = params[:note]
+  p archive = params[:archive_id]
+
+  @current_archive = Archive.get(archive)
+
+  @note = Note.new(note_attrs)
+
+  @current_archive.notes << @note
+
+  @current_archive.save
+
+
+  if @current_archive.save
+     # my_account is valid and has been saved
+    else
+      puts 'notes errors any'
+      puts @current_archive.notes.any? { |note| note.errors.any? }
+
+      @current_archive.notes.each do |note|
+       note.errors.each do |error|
+         p error
+       end
+     end
+  end
+
+  if @note.saved?()
+    redirect "/archive/#{@current_archive.id}"
+  else
+    redirect "/"
+  end
+
+end
+
+put "/notes/:note_id" do
+  note_id = params[:note_id]
+  note_attrs = params[:note]
+
+  note = Note.get(note_id)
+  note.update(note_attrs)
+
+  if request.xhr?
+    partial :'partials/note', :locals => { :note => note }
+  else
+    redirect "/archive/#{note.archive_id}"
+  end
+end
+
+delete "/notes/:note_id" do
+  note_id = params[:note_id]
+  note_attrs = params[:note]
+
+  note = Note.get(note_id)
+  note.destroy
+
+  if request.xhr?
+    note_id
+  else
+    redirect "/archive/#{note.archive_id}"
   end
 end
 

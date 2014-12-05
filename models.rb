@@ -54,7 +54,9 @@ class Archive
   property :name, String
   property :ts, DateTime
   belongs_to :channel
+
   has n, :chats
+  has n, :notes
 end
 
 class Chat
@@ -75,6 +77,18 @@ class Chat
   property :thumb_width, Text
   property :thumb_height, Text
 
+
+  belongs_to :archive
+end
+
+class Note
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :user, Text
+  property :note_title, Text
+  property :note_text, Text
+  property :note_tags, Text
 
   belongs_to :archive
 end
