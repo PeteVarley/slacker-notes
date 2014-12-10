@@ -21,49 +21,29 @@ def sync_slack_clients(client)
   @users_data = JSON.parse(client.users.list)
   @channel_members_data = @users_data["members"]
 
-  p "******"
-  puts @channel_members_data
-  p "******"
-
   process_and_create(@channel_members_data)
 end
 
 def process_and_create(members_data_hash)
-  p "******"
-  puts "members_data_hash"
-  puts members_data_hash
-  p "*****"
-
   #Members are listed in alphabetical order by first name
   members_data_hash.length.times do |member_number|
-
-    p "*********"
-    puts "member_number"
-    puts member_number
-    p "*********"
-
-    puts "*********"
-    puts "members_data_hash[member_number]"
-    puts members_data_hash[member_number]
-    puts "*********"
-
-    puts "update_or_create_user_attributes"
-    puts update_or_create_user_attributes(members_data_hash[member_number])
     update_or_create_user_attributes(members_data_hash[member_number])
   end
 end
 
 def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
-  p "********"
-  puts "user_information_hash"
   user_information_hash = member_data_hash_in_alphabetical_order
-  p user_information_hash
-  p "********"
 
-  method_name(user_information_hash)
+  puts
+  puts
+  puts "** update_or_create_users update_or_create_users update_or_create_users update_or_create_users **"
+  update_or_create_users(user_information_hash)
+  puts "** update_or_create_users update_or_create_users update_or_create_users update_or_create_users **"
+  puts
+  puts
 end
 
-def method_name(user_information_hash)
+def update_or_create_users(user_information_hash)
   user_information_hash = user_information_hash
     @slack_id = user_information_hash["id"]
 
@@ -97,16 +77,10 @@ def method_name(user_information_hash)
 
     user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
 
-    p "*** user user user user user user user user user user user user ******"
-    puts "user"
-    puts user
-    puts user.class
-    p "*** user user user user user user user user user user user user ******"
-
-  update_or_create_users(user)
+  save_users(user)
 end
 
-def update_or_create_users(user)
+def save_users(user)
 
   @users << user
 
