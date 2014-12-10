@@ -21,10 +21,10 @@ def sync_slack_clients(client)
   @users_data = JSON.parse(client.users.list)
   @channel_members_data = @users_data["members"]
 
-  process_and_create(@channel_members_data)
+  list_member_data(@channel_members_data)
 end
 
-def process_and_create(members_data_hash)
+def list_member_data(members_data_hash)
   #Members are listed in alphabetical order by first name
   members_data_hash.length.times do |member_number|
     update_or_create_user_attributes(members_data_hash[member_number])
