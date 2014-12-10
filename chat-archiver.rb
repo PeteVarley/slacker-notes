@@ -81,13 +81,7 @@ def save_users(user)
   if @users.save
     #users are saved
   else
-    puts 'user save errors any'
-    @users.any? { |user| user.errors.any? }
-    @users.each do |user|
-      user.errors.each do |user|
-        p user
-      end
-    end
+    #add partial that displays an appropriate message on the home page
   end
 end
 
