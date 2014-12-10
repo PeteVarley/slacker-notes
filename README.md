@@ -50,6 +50,11 @@ Snatches Slack Chat
 
 - [ ] Display correct emoji's
 
+### v[0.8] Chat Snatcher Archive
+
+- [ ] Ability to delete an archived chat on /archives
+- [ ] Ability to delete an archived chat on /archive/id
+
 ### v[1.0] Chat Snatcher Archive
 
 - [ ] Slack OAuth allows users to sign up and access their Slack Channels
