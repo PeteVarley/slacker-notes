@@ -26,17 +26,28 @@ Snatches Slack Chat
 
 - [X] Display time stamps in a readable manner on /chats
 - [X] Display time stamps in a readable manner on /archives
-- [X] Display first and last name with chat like Slack
+- [X] Display first and last name with chat like Slack on /archives/"id"
 
 ### v[0.4] Chat Snatcher Archive
 
-- [X] Add note taking capability to each archived chat
-- [ ] Add links to Archives and Users on home page
+- [X] Add note to any archived chat
+- [X] Edit a note on any archived chat
+- [X] Delete a note on any archived chat
 
 ### v[0.5] Chat Snatcher Archive
 
+- [ ] Add links to Archives and Users on home page
+- [ ] Add link to home on /archives page
+- [ ] Add link to home on /chat pages
+- [ ] Add link to home on /archives/id pages
+
+### v[0.6] Chat Snatcher Archive
+
 - [ ] Add first and last name to Users page
 - [ ] Add profile picture to Users page
+
+### v[0.7] Chat Snatcher Archive
+
 - [ ] Display correct emoji's
 
 ### v[1.0] Chat Snatcher Archive

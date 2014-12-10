@@ -19,57 +19,99 @@ end
 
 def sync_slack_clients(client)
   @users_data = JSON.parse(client.users.list)
-  @members = @users_data["members"]
+  @channel_members_data = @users_data["members"]
 
-  user_data_hash(@members)
+  p "******"
+  puts @channel_members_data
+  p "******"
+
+  process_and_create(@channel_members_data)
 end
 
-def user_data_hash(member_data)
-  member_data.count.times do |user|
-    user_hash = member_data[user]
+def process_and_create(members_data_hash)
+  p "******"
+  puts "members_data_hash"
+  puts members_data_hash
+  p "*****"
 
-      @slack_id = user_hash["id"]
+  #Members are listed in alphabetical order by first name
+  members_data_hash.length.times do |member_number|
 
-      @name = user_hash["name"]
+    p "*********"
+    puts "member_number"
+    puts member_number
+    p "*********"
 
-      @profile = user_hash["profile"]
+    puts "*********"
+    puts "members_data_hash[member_number]"
+    puts members_data_hash[member_number]
+    puts "*********"
 
-      @first_name = @profile["first_name"]
-
-      @last_name = @profile["last_name"]
-
-      @image_24 = @profile["image_24"]
-
-      @image_32 = @profile["image_32"]
-
-      @image_48 = @profile["image_48"]
-
-      @image_72 = @profile["image_72"]
-
-      @image_192 = @profile["image_192"]
-
-      @image_original = @profile["image_original"]
-
-      @title = @profile["title"]
-
-      @email = @profile["email"]
-
-      time = Time.now
-
-      @updated_at = time
-
-      user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
-
-      update_or_create_users(user)
+    puts "update_or_create_user_attributes"
+    puts update_or_create_user_attributes(members_data_hash[member_number])
+    update_or_create_user_attributes(members_data_hash[member_number])
   end
 end
 
-def update_or_create_users(argument)
+def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
+  p "********"
+  puts "user_information_hash"
+  user_information_hash = member_data_hash_in_alphabetical_order
+  p user_information_hash
+  p "********"
 
-  @users << argument
+  method_name(user_information_hash)
+end
+
+def method_name(user_information_hash)
+  user_information_hash = user_information_hash
+    @slack_id = user_information_hash["id"]
+
+    @name = user_information_hash["name"]
+
+    @profile = user_information_hash["profile"]
+
+    @first_name = @profile["first_name"]
+
+    @last_name = @profile["last_name"]
+
+    @image_24 = @profile["image_24"]
+
+    @image_32 = @profile["image_32"]
+
+    @image_48 = @profile["image_48"]
+
+    @image_72 = @profile["image_72"]
+
+    @image_192 = @profile["image_192"]
+
+    @image_original = @profile["image_original"]
+
+    @title = @profile["title"]
+
+    @email = @profile["email"]
+
+    time = Time.now
+
+    @updated_at = time
+
+    user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
+
+    p "*** user user user user user user user user user user user user ******"
+    puts "user"
+    puts user
+    puts user.class
+    p "*** user user user user user user user user user user user user ******"
+
+  update_or_create_users(user)
+end
+
+def update_or_create_users(user)
+
+  @users << user
 
   if @users.save
-    #cool
+    #users are saved
   else
     puts 'user save errors any'
     @users.any? { |user| user.errors.any? }
