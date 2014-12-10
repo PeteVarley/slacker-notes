@@ -34,13 +34,7 @@ end
 def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
   user_information_hash = member_data_hash_in_alphabetical_order
 
-  puts
-  puts
-  puts "** update_or_create_users update_or_create_users update_or_create_users update_or_create_users **"
   update_or_create_users(user_information_hash)
-  puts "** update_or_create_users update_or_create_users update_or_create_users update_or_create_users **"
-  puts
-  puts
 end
 
 def update_or_create_users(user_information_hash)
