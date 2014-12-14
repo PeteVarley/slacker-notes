@@ -307,15 +307,6 @@ post "/chats" do
 
   fetch_chat_number_param
 
-
-
-
-
-
-
-
-
-
 end
 
 
