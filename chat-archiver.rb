@@ -11,6 +11,14 @@ require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
+def create_archives
+  @archives = Channel.last.archives
+end
+
+def create_current_archive
+  @current_archive = Archive.create(:ts => Time.now)
+end
+
 def create_channel(argument)
   channel = Channel.first_or_create
   channel.name = argument
@@ -39,6 +47,7 @@ end
 
 def update_or_create_users(user_information_hash)
   user_information_hash = user_information_hash
+    #the following variables are named after the corresponding data items passed to this application from the Slack API
     @slack_id = user_information_hash["id"]
 
     @name = user_information_hash["name"]
@@ -93,9 +102,13 @@ helpers do
 end
 
 get "/" do
-
   erb :home
 end
+
+def client
+  client = Slack::Client.new(token: SLACK_API_TOKEN)
+end
+
 
 get("/users") do
   @users = Channel.last.users
@@ -104,7 +117,7 @@ get("/users") do
 end
 
 get "/archives" do
-  @archives = Channel.last.archives
+  create_archives
 
   erb :archives
 end
@@ -122,100 +135,153 @@ get("/archive/:id") do
   erb(:archive)
 end
 
-post "/chats" do
-  @archives = Channel.last.archives
-  puts "@archives"
-  puts @archives
-  @current_archive = Archive.create(:ts => Time.now)
+def add_current_archive_to_archives
+  create_archives
+  create_current_archive
   @archives << @current_archive
+  save_archives(@archives)
+end
+
+def save_archives(archives)
   @archives.save
+end
 
-  puts @current_archive.id
+def fetch_chat_number_param
+  chat_number_param = params().fetch("number")
+  number_of_chats_requested(chat_number_param)
+end
 
-  number_param = params().fetch("number")
+def number_of_chats_requested(chat_number_param)
+  number = chat_number_param[:chat_number]
 
-  number = number_param[:chat_number]
+  get_message_data(number)
+end
 
-  client = Slack::Client.new(token: SLACK_API_TOKEN)
+def get_message_data(number)
+  p "_____ number ______"
+  p number
 
-  @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
-
-  puts "message data"
-  puts @message_data
-  @messages_data = @message_data["messages"]
-
-  puts "next message data pattern"
-  puts @messages_data
-
-  @messages_data.count.times do |message|
-
-    message_hash = @messages_data[message]
-
-    @user = message_hash["user"]
-
-    @text = message_hash["text"]
-
-    @attachments = message_hash["attachments"]
+  p "______ client _____"
+  puts client
 
 
-    puts "attachments"
-    puts @attachments.class
-    if @attachments.class == Array
-      @attachments.count.times do |attachment|
-        attach_hash = @attachments[attachment]
+  p "**** @message_data *****"
+  p message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
+  get_messages_data(message_data)
+end
 
-        @title = attach_hash["title"]
-        puts "title"
-        puts @title
-        puts "title_link"
-        @title_link = attach_hash["title_link"]
-        puts @title_link
-        puts "attach text"
-        @attach_text = attach_hash["text"]
-        puts "fallback"
-        @fallback = attach_hash["fallback"]
-        puts @fallback
-        puts "thumb_url"
-        @thumb_url = attach_hash["thumb_url"]
-        puts @thumb_url
-        puts "from_url"
-        @from_url = attach_hash["from_url"]
-        puts @from_url
-        puts "thumb_width"
-        @thumb_width = attach_hash["thumb_width"]
-        puts @thumb_width
-        puts "thumb_height"
-        @thumb_height = attach_hash["thumb_height"]
-        puts @thumb_height
+def get_messages_data(message_data)
+  "-______ message_data ______"
+  p message_data
+  messages_data = message_data["messages"]
 
-      end
+  p "****** messages_data in get messsages_data ********"
+  p messages_data
+  messages_do(messages_data)
+end
+
+def messages_do(messages_data)
+  messages_data = messages_data
+  p "**** messages_data *****"
+  p messages_data
+  p "***** messages_data.count *****"
+  p messages_data.count
+
+  messages_data.count.times do |message|
+     p "message_num"
+     p message_num = message
+     puts message_num = message
+     message_num = message
+     get_message_hash(messages_data,message_num)
+  end
+end
+
+def get_message_hash(messages_data,message_num)
+
+  message_hash = messages_data[message_num]
+  build_chat(message_hash)
+end
+
+def build_chat(message_hash)
+  @user = message_hash["user"]
+
+  @text = message_hash["text"]
+
+  @attachments = message_hash["attachments"]
+
+
+  puts "attachments"
+  puts @attachments.class
+  if @attachments.class == Array
+    @attachments.count.times do |attachment|
+      attach_hash = @attachments[attachment]
+
+      @title = attach_hash["title"]
+      puts "title"
+      puts @title
+      puts "title_link"
+      @title_link = attach_hash["title_link"]
+      puts @title_link
+      puts "attach text"
+      @attach_text = attach_hash["text"]
+      puts "fallback"
+      @fallback = attach_hash["fallback"]
+      puts @fallback
+      puts "thumb_url"
+      @thumb_url = attach_hash["thumb_url"]
+      puts @thumb_url
+      puts "from_url"
+      @from_url = attach_hash["from_url"]
+      puts @from_url
+      puts "thumb_width"
+      @thumb_width = attach_hash["thumb_width"]
+      puts @thumb_width
+      puts "thumb_height"
+      @thumb_height = attach_hash["thumb_height"]
+      puts @thumb_height
+
     end
+  end
 
-    @ts = message_hash["ts"]
+  @ts = message_hash["ts"]
+  p "**** @ts *****"
+  puts @ts
+  p "*****"
 
-    p "**** @ts *****"
-    puts @ts
-    p "*****"
+  create_chat
+end
 
-    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+def create_chat
+  @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
 
-    @current_archive.chats << @chat
+  p " ****** @chat *****"
+  p @chat
+  add_chat_to_current_archive(@chat)
+end
 
-    if @current_archive.save
-     # my_account is valid and has been saved
-    else
-      puts 'chats errors any'
-      puts @current_archive.chats.any? { |chat| chat.errors.any? }
+def add_chat_to_current_archive(chat)
+  p "_____ current_archive before______"
+  @current_archive
+  @current_archive.chats << @chat
 
-      @current_archive.chats.each do |chat|
-       chat.errors.each do |error|
-         p error
-       end
+  p "_____ current_archive after______"
+  @current_archive
+
+  save_chat(@current_archive)
+end
+
+def save_chat(current_archive)
+ if @current_archive.save
+   # my_account is valid and has been saved
+  else
+    puts 'chats errors any'
+    puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+    @current_archive.chats.each do |chat|
+     chat.errors.each do |error|
+       p error
      end
-   end
-
-
-
+    end
   end
 
   if @chat.saved?()
@@ -224,6 +290,34 @@ post "/chats" do
     redirect "/"
   end
 end
+
+post "/chats" do
+
+  add_current_archive_to_archives
+
+  p "***** @archvies *****"
+  p @archives
+
+  p "***** @current_archive *****"
+  p @current_archive
+
+  puts "***** @current_archive.id "
+
+  puts @current_archive.id
+
+  fetch_chat_number_param
+
+
+
+
+
+
+
+
+
+
+end
+
 
 post "/notes" do
 
