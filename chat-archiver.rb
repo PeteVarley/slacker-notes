@@ -11,6 +11,12 @@ require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
+helpers do
+  def default_channel
+    @default_channel ||= Channel.last
+  end
+end
+
 def create_archives
   @archives = Channel.last.archives
 end
@@ -40,19 +46,19 @@ def list_member_data(members_data_hash)
 end
 
 def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
-  user_information_hash = member_data_hash_in_alphabetical_order
+  member_information_hash = member_data_hash_in_alphabetical_order
 
-  update_or_create_users(user_information_hash)
+  update_or_create_users(member_information_hash)
 end
 
-def update_or_create_users(user_information_hash)
-  user_information_hash = user_information_hash
+def update_or_create_users(member_information_hash)
+  member_information_hash = member_information_hash
     #the following variables are named after the corresponding data items passed to this application from the Slack API
-    @slack_id = user_information_hash["id"]
+    @slack_id = member_information_hash["id"]
 
-    @name = user_information_hash["name"]
+    @name = member_information_hash["name"]
 
-    @profile = user_information_hash["profile"]
+    @profile = member_information_hash["profile"]
 
     @first_name = @profile["first_name"]
 
@@ -94,21 +100,15 @@ def save_users(user)
   end
 end
 
-
-helpers do
-  def default_channel
-    @default_channel ||= Channel.last
-  end
-end
-
 get "/" do
   erb :home
 end
 
+# "/chats" do ############################################################################################################
+
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
 end
-
 
 get("/users") do
   @users = Channel.last.users
@@ -135,7 +135,6 @@ get("/archive/:id") do
   erb(:archive)
 end
 
-# "/chats" do ############################################################################################################
 def create_current_archvie
   @current_archive = Archive.create(:ts => Time.now)
   add_current_archive_to_archives(@current_archive)
