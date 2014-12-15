@@ -104,8 +104,6 @@ get "/" do
   erb :home
 end
 
-# "/chats" do ############################################################################################################
-
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
 end
@@ -132,8 +130,10 @@ get("/archive/:id") do
     user["name"]
   end
 
-  erb(:archive)
+  erb :archive
 end
+
+# "/chats" do ############################################################################################################
 
 def create_current_archvie
   @current_archive = Archive.create(:ts => Time.now)
@@ -164,10 +164,6 @@ end
 
 def request_channel_history(number_of_messages)
   number = number_of_messages
-  puts "*** number ***"
-  puts number
-  puts "++++++channel_history_requested++++++++"
-  p channel_history_requested = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
 
   channel_history_requested = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
   message_hashes_from_channel_history(channel_history_requested)
@@ -176,88 +172,52 @@ end
 def message_hashes_from_channel_history(messages_requested)
   messages_array = messages_requested["messages"]
 
-  p "*********** messages_array *********"
-  p messages_array
-
-  p "&&&&&&& message_data['messages'] &&&&&&"
-  p messages_requested["messages"]
-
-
   loop_through_message_hashes(messages_array)
 end
 
 def loop_through_message_hashes(messages_array)
-  puts "messages_array.length"
-  p messages_array.length
   messages_array.length.times do |message_number|
-    puts "message_number"
-    puts message_number
-
     get_each_hash_from_messages_array(messages_array,message_number)
   end
-
 end
 
 def get_each_hash_from_messages_array(messages_array,message_number)
-  puts "blah blah blah"
-  p "message_hash"
   slack_message_hash = messages_array[message_number]
-  p slack_message_hash
+
   build_message_hash_for_chat_archive(slack_message_hash)
 end
 
 def build_message_hash_for_chat_archive(slack_message_hash)
 
   @user = slack_message_hash["user"]
-  p "**** @user *****"
-    puts @user
-  p "*****"
 
   @text = slack_message_hash["text"]
-  p "**** @text *****"
-    puts @text
-  p "*****"
 
   @attachments = slack_message_hash["attachments"]
 
   @ts = slack_message_hash["ts"]
-  p "**** @ts *****"
-    puts @ts
-  p "*****"
 
-  puts "attachments"
-  puts @attachments.class
   if @attachments.class == Array
     @attachments.length.times do |attachment|
       slack_attachment_hash = @attachments[attachment]
 
       @title = slack_attachment_hash["title"]
-      puts "title"
-      puts @title
-      puts "title_link"
+
       @title_link = slack_attachment_hash["title_link"]
-      puts @title_link
-      puts "attach text"
+
       @attach_text = slack_attachment_hash["text"]
-      puts "fallback"
+
       @fallback = slack_attachment_hash["fallback"]
-      puts @fallback
-      puts "thumb_url"
+
       @thumb_url = slack_attachment_hash["thumb_url"]
-      puts @thumb_url
-      puts "from_url"
+
       @from_url = slack_attachment_hash["from_url"]
-      puts @from_url
-      puts "thumb_width"
+
       @thumb_width = slack_attachment_hash["thumb_width"]
-      puts @thumb_width
-      puts "thumb_height"
+
       @thumb_height = slack_attachment_hash["thumb_height"]
-      puts @thumb_height
     end
   end
-
-  p @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
 
   @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
   create_chat(@chat)
@@ -278,17 +238,10 @@ def errors_saving_chat
     if @chat.saved?()
       redirect "/archive/#{@current_archive.id}"
     else
-      redirect "/"
+      erb :error
     end
   else
-    puts 'chats errors any'
-    puts @current_archive.chats.any? { |chat| chat.errors.any? }
-
-    @current_archive.chats.each do |chat|
-     chat.errors.each do |error|
-       p error
-     end
-    end
+    erb :error
   end
 end
 
