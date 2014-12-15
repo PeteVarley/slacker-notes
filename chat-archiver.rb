@@ -156,10 +156,10 @@ end
 
 def number(number_param)
   number = number_param[:chat_number]
-  messages_data(number)
+  messages_data_method(number)
 end
 
-def messages_data(number)
+def messages_data_method(number)
   number = number
   puts "*** number ***"
   puts number
@@ -168,7 +168,113 @@ def messages_data(number)
 end
 
 def process_message_data(message_data)
-  @messages_data = message_data["messages"]
+  messages_data = message_data["messages"]
+  messages_do(messages_data)
+end
+
+def messages_do(messages_data)
+  puts "messages_data.length"
+  p messages_data.length
+  messages_data.length.times do |message|
+    puts "message"
+    puts message
+
+    build_message_hash(messages_data,message)
+  end
+
+end
+
+def build_message_hash(messages_data,message)
+  puts "blah blah blah"
+  p "message_hash"
+  p message_hash = messages_data[message]
+  message_hash = messages_data[message]
+  build_message_hash_real(message_hash)
+end
+
+def build_message_hash_real(message_hash)
+
+  @user = message_hash["user"]
+  p "**** @user *****"
+    puts @user
+  p "*****"
+
+  @text = message_hash["text"]
+  p "**** @text *****"
+    puts @text
+  p "*****"
+
+  @attachments = message_hash["attachments"]
+
+  @ts = message_hash["ts"]
+  p "**** @ts *****"
+    puts @ts
+  p "*****"
+
+  puts "attachments"
+  puts @attachments.class
+  if @attachments.class == Array
+    @attachments.count.times do |attachment|
+      attach_hash = @attachments[attachment]
+
+      @title = attach_hash["title"]
+      puts "title"
+      puts @title
+      puts "title_link"
+      @title_link = attach_hash["title_link"]
+      puts @title_link
+      puts "attach text"
+      @attach_text = attach_hash["text"]
+      puts "fallback"
+      @fallback = attach_hash["fallback"]
+      puts @fallback
+      puts "thumb_url"
+      @thumb_url = attach_hash["thumb_url"]
+      puts @thumb_url
+      puts "from_url"
+      @from_url = attach_hash["from_url"]
+      puts @from_url
+      puts "thumb_width"
+      @thumb_width = attach_hash["thumb_width"]
+      puts @thumb_width
+      puts "thumb_height"
+      @thumb_height = attach_hash["thumb_height"]
+      puts @thumb_height
+    end
+  end
+
+  p @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+
+  @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+  create_chat(@chat)
+end
+
+def create_chat(chat)
+  @current_archive.chats << @chat
+  save_chat(@current_archive)
+end
+
+def save_chat(current_archive)
+
+  p @current_archive.save
+
+  if @current_archive.save
+   # my_account is valid and has been saved
+    if @chat.saved?()
+      #redirect "/archive/#{@current_archive.id}"
+    else
+      redirect "/"
+    end
+  else
+    puts 'chats errors any'
+    puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+    @current_archive.chats.each do |chat|
+     chat.errors.each do |error|
+       p error
+     end
+    end
+  end
 end
 
 post "/chats" do
@@ -177,83 +283,8 @@ post "/chats" do
 
   number_param
 
+  redirect "/archive/#{@current_archive.id}"
 
-  @messages_data.count.times do |message|
-
-    message_hash = @messages_data[message]
-
-    @user = message_hash["user"]
-
-    @text = message_hash["text"]
-
-    @attachments = message_hash["attachments"]
-
-
-    puts "attachments"
-    puts @attachments.class
-    if @attachments.class == Array
-      @attachments.count.times do |attachment|
-        attach_hash = @attachments[attachment]
-
-        @title = attach_hash["title"]
-        puts "title"
-        puts @title
-        puts "title_link"
-        @title_link = attach_hash["title_link"]
-        puts @title_link
-        puts "attach text"
-        @attach_text = attach_hash["text"]
-        puts "fallback"
-        @fallback = attach_hash["fallback"]
-        puts @fallback
-        puts "thumb_url"
-        @thumb_url = attach_hash["thumb_url"]
-        puts @thumb_url
-        puts "from_url"
-        @from_url = attach_hash["from_url"]
-        puts @from_url
-        puts "thumb_width"
-        @thumb_width = attach_hash["thumb_width"]
-        puts @thumb_width
-        puts "thumb_height"
-        @thumb_height = attach_hash["thumb_height"]
-        puts @thumb_height
-
-      end
-    end
-
-    @ts = message_hash["ts"]
-
-    p "**** @ts *****"
-    puts @ts
-    p "*****"
-
-    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
-
-    @current_archive.chats << @chat
-
-    if @current_archive.save
-     # my_account is valid and has been saved
-    else
-      puts 'chats errors any'
-      puts @current_archive.chats.any? { |chat| chat.errors.any? }
-
-      @current_archive.chats.each do |chat|
-       chat.errors.each do |error|
-         p error
-       end
-     end
-   end
-
-
-
-  end
-
-  if @chat.saved?()
-    redirect "/archive/#{@current_archive.id}"
-  else
-    redirect "/"
-  end
 end
 
 
