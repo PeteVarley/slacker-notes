@@ -149,6 +149,9 @@ def save_archives(archives)
     @archives.save
 end
 
+def archive_this_chat
+  number_param
+end
 def number_param
   number_param = params().fetch("number")
   number(number_param)
@@ -256,12 +259,20 @@ end
 
 def save_chat(current_archive)
 
-  p @current_archive.save
+  @current_archive.save
+
+end
+
+post "/chats" do
+  create_archives
+  create_current_archvie
+
+  archive_this_chat
 
   if @current_archive.save
    # my_account is valid and has been saved
     if @chat.saved?()
-      #redirect "/archive/#{@current_archive.id}"
+      redirect "/archive/#{@current_archive.id}"
     else
       redirect "/"
     end
@@ -275,15 +286,6 @@ def save_chat(current_archive)
      end
     end
   end
-end
-
-post "/chats" do
-  create_archives
-  create_current_archvie
-
-  number_param
-
-  redirect "/archive/#{@current_archive.id}"
 
 end
 
