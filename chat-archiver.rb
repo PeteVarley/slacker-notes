@@ -104,6 +104,7 @@ get "/" do
   erb :home
 end
 
+
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
 end
