@@ -300,12 +300,19 @@ post "/notes" do
 
 end
 
-put "/notes/:note_id" do
+def get_note_id
   note_id = params[:note_id]
-  note_attrs = params[:note]
+end
 
-  note = Note.get(note_id)
-  note.update(note_attrs)
+def get_note_attrs
+  note_attrs = params[:note]
+end
+
+put "/notes/:note_id" do
+
+
+  note = Note.get(get_note_id)
+  note.update(get_note_attrs)
 
   if request.xhr?
     partial :'partials/note', :locals => { :note => note }
@@ -315,10 +322,8 @@ put "/notes/:note_id" do
 end
 
 delete "/notes/:note_id" do
-  note_id = params[:note_id]
-  note_attrs = params[:note]
 
-  note = Note.get(note_id)
+  note = Note.get(get_note_id)
   note.destroy
 
   if request.xhr?
