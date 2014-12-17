@@ -114,6 +114,12 @@ get "/" do
 end
 
 
+
+get "/archiver" do
+  erb :archiver
+end
+
+
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
 end
@@ -301,11 +307,15 @@ post "/notes" do
 
 end
 
+def note_id_method
+  note_id_method = params[:note_id]
+end
+
 put "/notes/:note_id" do
-  note_id = params[:note_id]
+
   note_attrs = params[:note]
 
-  note = Note.get(note_id)
+  note = Note.get(note_id_method)
   note.update(note_attrs)
 
   if request.xhr?
