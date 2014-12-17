@@ -11,9 +11,9 @@ require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
-def create_channel(argument)
+def create_channel(channel_name)
   channel = Channel.first_or_create
-  channel.name = argument
+  channel.name = channel_name
   channel.save
 end
 
@@ -74,15 +74,17 @@ def update_or_create_users(user_information_hash)
 
     @updated_at = time
 
-    user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
+  user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
 
-  save_users(user)
+  add_users_to_user(user)
 end
 
-def save_users(user)
-
+def add_users_to_user(user)
   @users << user
+  save_users(@users)
+end
 
+def save_users(users)
   if @users.save
     #users are saved
   else
