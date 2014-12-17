@@ -11,10 +11,22 @@ require_relative 'models'
 
 SLACK_API_TOKEN=ENV["SLACK"]
 
+helpers do
+
+end
+
 def create_channel(channel_name)
   channel = Channel.first_or_create
   channel.name = channel_name
   channel.save
+end
+
+def create_archives
+  @archives = Channel.last.archives
+end
+
+def create_current_archive
+  @current_archive = Archive.create(:ts => Time.now)
 end
 
 def sync_slack_clients(client)
@@ -32,9 +44,9 @@ def list_member_data(members_data_hash)
 end
 
 def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
-  user_information_hash = member_data_hash_in_alphabetical_order
+  member_information_hash = member_data_hash_in_alphabetical_order
 
-  update_or_create_users(user_information_hash)
+  update_or_create_users(member_information_hash)
 end
 
 def time_now
@@ -93,8 +105,11 @@ def save_users(users)
 end
 
 get "/" do
-
   erb :home
+end
+
+def client
+  client = Slack::Client.new(token: SLACK_API_TOKEN)
 end
 
 get("/users") do
@@ -104,7 +119,7 @@ get("/users") do
 end
 
 get "/archives" do
-  @archives = Channel.last.archives
+  create_archives
 
   erb :archives
 end
@@ -119,111 +134,130 @@ get("/archive/:id") do
     user["name"]
   end
 
-  erb(:archive)
+  erb :archive
+end
+
+# "/chats" do ############################################################################################################
+
+def create_current_archvie
+  @current_archive = Archive.create(:ts => Time.now)
+  add_current_archive_to_archives(@current_archive)
+end
+
+def add_current_archive_to_archives(current_archive)
+  @archives << @current_archive
+end
+
+def save_archives(archives)
+  @archives.save
+end
+
+def archive_this_chat
+  fetch_number_of_messages_user_wants_to_save
+end
+
+def fetch_number_of_messages_user_wants_to_save
+  fetch_number_param = params().fetch("number")
+  number_of_messages(fetch_number_param)
+end
+
+def number_of_messages(fetch_number_param)
+  number_of_messages = fetch_number_param[:chat_number]
+  request_channel_history(number_of_messages)
+end
+
+def request_channel_history(number_of_messages)
+  number = number_of_messages
+
+  channel_history_requested = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
+  message_hashes_from_channel_history(channel_history_requested)
+end
+
+def message_hashes_from_channel_history(messages_requested)
+  messages_array = messages_requested["messages"]
+
+  loop_through_message_hashes(messages_array)
+end
+
+def loop_through_message_hashes(messages_array)
+  messages_array.length.times do |message_number|
+    get_each_hash_from_messages_array(messages_array,message_number)
+  end
+end
+
+def get_each_hash_from_messages_array(messages_array,message_number)
+  slack_message_hash = messages_array[message_number]
+
+  build_message_hash_for_chat_archive(slack_message_hash)
+end
+
+def build_message_hash_for_chat_archive(slack_message_hash)
+
+  @user = slack_message_hash["user"]
+
+  @text = slack_message_hash["text"]
+
+  @attachments = slack_message_hash["attachments"]
+
+  @ts = slack_message_hash["ts"]
+
+  if @attachments.class == Array
+    @attachments.length.times do |attachment|
+      slack_attachment_hash = @attachments[attachment]
+
+      @title = slack_attachment_hash["title"]
+
+      @title_link = slack_attachment_hash["title_link"]
+
+      @attach_text = slack_attachment_hash["text"]
+
+      @fallback = slack_attachment_hash["fallback"]
+
+      @thumb_url = slack_attachment_hash["thumb_url"]
+
+      @from_url = slack_attachment_hash["from_url"]
+
+      @thumb_width = slack_attachment_hash["thumb_width"]
+
+      @thumb_height = slack_attachment_hash["thumb_height"]
+    end
+  end
+
+  @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+  create_chat(@chat)
+end
+
+def create_chat(chat)
+  @current_archive.chats << @chat
+  save_chat(@current_archive)
+end
+
+def save_chat(current_archive)
+  @current_archive.save
+end
+
+def errors_saving_chat
+  if @current_archive.save
+   # my_account is valid and has been saved
+    if @chat.saved?()
+      redirect "/archive/#{@current_archive.id}"
+    else
+      erb :error
+    end
+  else
+    erb :error
+  end
 end
 
 post "/chats" do
-  @archives = Channel.last.archives
-  puts "@archives"
-  puts @archives
-  @current_archive = Archive.create(:ts => Time.now)
-  @archives << @current_archive
-  @archives.save
+  create_archives
+  create_current_archvie
 
-  puts @current_archive.id
-
-  number_param = params().fetch("number")
-
-  number = number_param[:chat_number]
-
-  client = Slack::Client.new(token: SLACK_API_TOKEN)
-
-  @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
-
-  puts "message data"
-  puts @message_data
-  @messages_data = @message_data["messages"]
-
-  puts "next message data pattern"
-  puts @messages_data
-
-  @messages_data.count.times do |message|
-
-    message_hash = @messages_data[message]
-
-    @user = message_hash["user"]
-
-    @text = message_hash["text"]
-
-    @attachments = message_hash["attachments"]
-
-
-    puts "attachments"
-    puts @attachments.class
-    if @attachments.class == Array
-      @attachments.count.times do |attachment|
-        attach_hash = @attachments[attachment]
-
-        @title = attach_hash["title"]
-        puts "title"
-        puts @title
-        puts "title_link"
-        @title_link = attach_hash["title_link"]
-        puts @title_link
-        puts "attach text"
-        @attach_text = attach_hash["text"]
-        puts "fallback"
-        @fallback = attach_hash["fallback"]
-        puts @fallback
-        puts "thumb_url"
-        @thumb_url = attach_hash["thumb_url"]
-        puts @thumb_url
-        puts "from_url"
-        @from_url = attach_hash["from_url"]
-        puts @from_url
-        puts "thumb_width"
-        @thumb_width = attach_hash["thumb_width"]
-        puts @thumb_width
-        puts "thumb_height"
-        @thumb_height = attach_hash["thumb_height"]
-        puts @thumb_height
-
-      end
-    end
-
-    @ts = message_hash["ts"]
-
-    p "**** @ts *****"
-    puts @ts
-    p "*****"
-
-    @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
-
-    @current_archive.chats << @chat
-
-    if @current_archive.save
-     # my_account is valid and has been saved
-    else
-      puts 'chats errors any'
-      puts @current_archive.chats.any? { |chat| chat.errors.any? }
-
-      @current_archive.chats.each do |chat|
-       chat.errors.each do |error|
-         p error
-       end
-     end
-   end
-
-
-
-  end
-
-  if @chat.saved?()
-    redirect "/archive/#{@current_archive.id}"
-  else
-    redirect "/"
-  end
+  archive_this_chat
+  errors_saving_chat
 end
+
+
 
 post "/notes" do
 
