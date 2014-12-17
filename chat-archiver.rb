@@ -307,7 +307,7 @@ post "/notes" do
 
 end
 
-def note_id_method
+def get_note_id
   note_id_method = params[:note_id]
 end
 
@@ -315,7 +315,7 @@ put "/notes/:note_id" do
 
   note_attrs = params[:note]
 
-  note = Note.get(note_id_method)
+  note = Note.get(get_note_id)
   note.update(note_attrs)
 
   if request.xhr?
