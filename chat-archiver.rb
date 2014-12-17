@@ -37,12 +37,17 @@ def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
   update_or_create_users(user_information_hash)
 end
 
+def time_now
+  time = Time.now
+end
+
 def update_or_create_users(user_information_hash)
   user_information_hash = user_information_hash
     @slack_id = user_information_hash["id"]
 
     @name = user_information_hash["name"]
-
+    # the following are profile attributes this method is capturing from the Slack API
+    # https://api.slack.com/methods/users.list
     @profile = user_information_hash["profile"]
 
     @first_name = @profile["first_name"]
@@ -65,7 +70,7 @@ def update_or_create_users(user_information_hash)
 
     @email = @profile["email"]
 
-    time = Time.now
+    time_now
 
     @updated_at = time
 
@@ -82,13 +87,6 @@ def save_users(user)
     #users are saved
   else
     #add partial that displays an appropriate message on the home page
-  end
-end
-
-
-helpers do
-  def default_channel
-    @default_channel ||= Channel.last
   end
 end
 
