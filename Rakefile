@@ -12,6 +12,6 @@ task :create_users do
   @users = Channel.last.users
   client = Slack::Client.new(token: SLACK_API_TOKEN)
 
-  sync_slack_clients(client)
+  create_or_sync_update_users(client)
 
 end

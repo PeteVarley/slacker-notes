@@ -12,7 +12,7 @@ require_relative 'models'
 SLACK_API_TOKEN=ENV["SLACK"]
 
 helpers do
-
+ #saving for later
 end
 
 def create_channel(channel_name)
@@ -29,7 +29,7 @@ def create_current_archive
   @current_archive = Archive.create(:ts => Time.now)
 end
 
-def sync_slack_clients(client)
+def create_or_sync_update_users(client)
   @users_data = JSON.parse(client.users.list)
   @channel_members_data = @users_data["members"]
 
