@@ -29,11 +29,17 @@ def create_current_archive
   @current_archive = Archive.create(:ts => Time.now)
 end
 
-def create_or_sync_update_users(client)
-  @users_data = JSON.parse(client.users.list)
-  @channel_members_data = @users_data["members"]
+def create_or_update_users(client)
+  parse_users_list(client)
+end
 
-  list_member_data(@channel_members_data)
+def parse_users_list(client)
+  # Slack users.list
+  #https://api.slack.com/methods/users.list
+  users_data = JSON.parse(client.users.list)
+  channel_members_data = users_data["members"]
+
+  list_member_data(channel_members_data)
 end
 
 def list_member_data(members_data_hash)
@@ -46,47 +52,46 @@ end
 def update_or_create_user_attributes(member_data_hash_in_alphabetical_order)
   member_information_hash = member_data_hash_in_alphabetical_order
 
-  update_or_create_users(member_information_hash)
+  update_or_create_member_information_hash(member_information_hash)
 end
 
 def time_now
   time = Time.now
 end
 
-def update_or_create_users(user_information_hash)
-  user_information_hash = user_information_hash
-    @slack_id = user_information_hash["id"]
+def update_or_create_member_information_hash(member_information_hash)
+  member_information_hash = member_information_hash
 
-    @name = user_information_hash["name"]
+    @slack_id = member_information_hash["id"]
+
+    @name = member_information_hash["name"]
     # the following are profile attributes this method is capturing from the Slack API
     # https://api.slack.com/methods/users.list
-    @profile = user_information_hash["profile"]
+    @profile = member_information_hash["profile"]
 
-    @first_name = @profile["first_name"]
+      @first_name = @profile["first_name"]
 
-    @last_name = @profile["last_name"]
+      @last_name = @profile["last_name"]
+      # image is 24 x 24 pixels
+      @image_24 = @profile["image_24"]
+      # image is 32 x 32 pixels
+      @image_32 = @profile["image_32"]
+      # image is 48 x 48 pixels
+      @image_48 = @profile["image_48"]
+      # image is 72 x 72 pixels
+      @image_72 = @profile["image_72"]
+      # image is 192 x 192 pixels
+      @image_192 = @profile["image_192"]
 
-    @image_24 = @profile["image_24"]
+      @image_original = @profile["image_original"]
 
-    @image_32 = @profile["image_32"]
+      @title = @profile["title"]
 
-    @image_48 = @profile["image_48"]
+      @email = @profile["email"]
 
-    @image_72 = @profile["image_72"]
+    @updated_at = time_now
 
-    @image_192 = @profile["image_192"]
-
-    @image_original = @profile["image_original"]
-
-    @title = @profile["title"]
-
-    @email = @profile["email"]
-
-    time_now
-
-    @updated_at = time
-
-  user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @created_at)
+  user = User.first_or_create(:slack_id => @slack_id, :name => @name, :first_name => @first_name, :last_name => @last_name, :image_24 => @image_24, :image_32 => @image_32,:image_48 => @image_48,:image_72 => @image_72,:image_192 => @image_192,:image_original => @image_original,:title => @title,:email => @email,:updated_at => @updated_at)
 
   add_users_to_user(user)
 end
@@ -258,6 +263,7 @@ post "/chats" do
 end
 
 
+# "/notes" do ############################################################################################################
 
 post "/notes" do
 
@@ -322,55 +328,55 @@ delete "/notes/:note_id" do
   end
 end
 
-post "/chats/:num" do
-  num = params[:num]
-  @archives = default_channel.archives
-  @current_archive = Archive.create(:ts => Time.now)
-  @archives << @current_archive
-  @archives.save
+# post "/chats/:num" do
+#   num = params[:num]
+#   @archives = default_channel.archives
+#   @current_archive = Archive.create(:ts => Time.now)
+#   @archives << @current_archive
+#   @archives.save
 
-  client = Slack::Client.new(token: SLACK_API_TOKEN)
-  @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>num))
+#   client = Slack::Client.new(token: SLACK_API_TOKEN)
+#   @message_data = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>num))
 
-  @messages_data = @message_data["messages"]
+#   @messages_data = @message_data["messages"]
 
-  # @messages_data.count.times do |x|
+#   @messages_data.count.times do |x|
 
-  #   message_hash = @messages_data[x]
-
-
-  #   @user = message_hash["user"]
-
-  #   @text = message_hash["text"]
-
-  #   @ts = message_hash["ts"]
-
-  #   @chat = Chat.create(:text => @text)
-
-  #   @current_archive.chats << @chat
+#     message_hash = @messages_data[x]
 
 
-  #   if @current_archive.save
-  #    # my_account is valid and has been saved
-  #   else
-  #     puts 'chats errors any'
-  #     puts @current_archive.chats.any? { |chat| chat.errors.any? }
+#     @user = message_hash["user"]
 
-  #     @current_archive.chats.each do |chat|
-  #      chat.errors.each do |error|
-  #        p error
-  #      end
-  #    end
-  #  end
+#     @text = message_hash["text"]
+
+#     @ts = message_hash["ts"]
+
+#     @chat = Chat.create(:text => @text)
+
+#     @current_archive.chats << @chat
 
 
+#     if @current_archive.save
+#      # my_account is valid and has been saved
+#     else
+#       puts 'chats errors any'
+#       puts @current_archive.chats.any? { |chat| chat.errors.any? }
 
-  # end
+#       @current_archive.chats.each do |chat|
+#        chat.errors.each do |error|
+#          p error
+#        end
+#      end
+#    end
 
-  # if @chat.saved?()
-  #   erb(:chats)
-  # else
-  #   redirect "/"
-  # end
-  erb(:chats)
-end
+
+
+#   end
+
+#   if @chat.saved?()
+#     erb(:chats)
+#   else
+#     redirect "/"
+#   end
+#   erb(:chats)
+# end
