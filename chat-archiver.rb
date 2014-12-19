@@ -299,15 +299,15 @@ def save_current_archive_with_note
 
 
 	if @current_archive.save
-	 # my_account is valid and has been saved
+	 # current archive has been saved
 	else
 		erb :'error'
 	end
 
 	if @note.saved?()
-		erb :'error'
+		# note has been saveds
 	else
-		redirect "/"
+		erb :'error'
 	end
 
 end
