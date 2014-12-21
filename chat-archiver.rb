@@ -121,7 +121,7 @@ get "/:client_id/:redirect_uri/:state/" do
   #redirect "https://slack.com/oauth/authorize"
 end
 
-get "/home" do
+get "/" do
   erb :home
 end
 
