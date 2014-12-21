@@ -117,8 +117,8 @@ get "/:client_id/:redirect_uri/:state/" do
   #@team = params[:team]
 
 
-  #erb :param_test
-  redirect "https://slack.com/oauth/authorize"
+  erb :param_test
+  #redirect "https://slack.com/oauth/authorize"
 end
 
 get "/home" do
