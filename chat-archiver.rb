@@ -322,7 +322,7 @@ def save_current_archive_with_note
   if @current_archive.save
    # current archive has been saved
   else
-    erb :'error'
+    erb :'notes'
   end
 
   if @note.saved?()
