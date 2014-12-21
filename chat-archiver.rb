@@ -109,9 +109,28 @@ def save_users(users)
   end
 end
 
-get "/" do
+get "/:client_id/:redirect_uri/:state/" do
+  @client_id = params[:client_id]
+  @redirect_uri = params[:redirect_uri]
+  #@scope = params[:scope]
+  @state = params[:state]
+  #@team = params[:team]
+
+
+  #erb :param_test
+  redirect "https://slack.com/oauth/authorize"
+end
+
+get "/home" do
   erb :home
 end
+
+
+
+get "/archiver" do
+  erb :archiver
+end
+
 
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
@@ -319,6 +338,14 @@ end
 put "/notes/:note_id" do
   note = Note.get(get_note_id)
   note.update(get_note_attrs)
+end
+
+put "/notes/:note_id" do
+
+  note_attrs = params[:note]
+
+  note = Note.get(get_note_id)
+  note.update(note_attrs)
 
   if request.xhr?
     partial :'partials/notes', :locals => { :note => note }
