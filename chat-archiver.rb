@@ -109,9 +109,9 @@ def save_users(users)
   end
 end
 
-get "/:client_id/:redirect_uri/:state/" do
+get "/:client_id/:state/" do
   @client_id = params[:client_id]
-  @redirect_uri = params[:redirect_uri]
+  #@redirect_uri = params[:redirect_uri]
   #@scope = params[:scope]
   @state = params[:state]
   #@team = params[:team]
