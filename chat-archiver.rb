@@ -109,7 +109,19 @@ def save_users(users)
   end
 end
 
-get "/" do
+get "/:client_id/:redirect_uri/:state/" do
+  @client_id = params[:client_id]
+  @redirect_uri = params[:redirect_uri]
+  #@scope = params[:scope]
+  @state = params[:state]
+  #@team = params[:team]
+
+
+  #erb :param_test
+  redirect "https://slack.com/oauth/authorize"
+end
+
+get "/home" do
   erb :home
 end
 
