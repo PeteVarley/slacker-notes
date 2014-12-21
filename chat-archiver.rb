@@ -110,7 +110,9 @@ def save_users(users)
 end
 
 get "/:client_id/:state/" do
+  puts "_____________ @client_id _____________"
   @client_id = params[:client_id]
+  puts @client_id
   #@redirect_uri = params[:redirect_uri]
   #@scope = params[:scope]
   @state = params[:state]
