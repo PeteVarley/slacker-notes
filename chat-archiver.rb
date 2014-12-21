@@ -316,17 +316,16 @@ def add_note_to_current_archive(note)
 end
 
 def save_current_archive_with_note
-  @current_archive.save
-
-
   if @current_archive.save
    # current archive has been saved
+
   else
-    erb :'notes'
+    erb :'error'
   end
 
   if @note.saved?()
     # note has been saveds
+    redirect "/archive/#{@current_archive.id}"
   else
     erb :'error'
   end
