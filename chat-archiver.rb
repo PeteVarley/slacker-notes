@@ -109,13 +109,13 @@ def save_users(users)
   end
 end
 
-get "/:client_id/:state/" do
+get "/test" do
   puts "_____________ @client_id _____________"
-  @client_id = params[:client_id]
+  @client_id = 3012263173.3259470988
   puts @client_id
   #@redirect_uri = params[:redirect_uri]
   #@scope = params[:scope]
-  @state = params[:state]
+  @state = 123
   #@team = params[:team]
 
 
@@ -124,7 +124,7 @@ get "/:client_id/:state/" do
 end
 
 get "/" do
-  erb :home
+  erb :archiver
 end
 
 
