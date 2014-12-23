@@ -1,5 +1,8 @@
 require 'data_mapper'
 require 'dm-timestamps'
+require 'sinatra'
+require 'omniauth'
+
 
 DataMapper::Logger.new($stdout, :debug)
 
