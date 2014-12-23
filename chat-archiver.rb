@@ -43,9 +43,16 @@ class Developer
   info do
     options.fields.inject({}) do |hash, field|
       hash[field] = request.params[field.to_s]
+      puts "&&&&& hash &&&&&"
+      puts hash
       hash
     end
   end
+end
+
+post '/auth/developer/callback' do
+
+  erb :callback
 end
 
 
