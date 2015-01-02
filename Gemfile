@@ -7,6 +7,7 @@ gem 'data_mapper'
 gem 'rake'
 gem 'slack-client'
 gem 'json'
+gem 'omniauth'
 
 group :development do
   gem "sqlite3"

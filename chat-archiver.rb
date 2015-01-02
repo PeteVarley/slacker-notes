@@ -4,6 +4,7 @@ require 'slack/client'
 require 'rubygems'
 require 'json'
 require 'date'
+require 'omniauth'
 
 set :partial_template_engine, :erb
 
@@ -109,20 +110,6 @@ def save_users(users)
   end
 end
 
-get "/test" do
-  puts "_____________ @client_id _____________"
-  @client_id = 3012263173.3259470988
-  puts @client_id
-  #@redirect_uri = params[:redirect_uri]
-  #@scope = params[:scope]
-  @state = 123
-  #@team = params[:team]
-
-
-  #erb :param_test
-  redirect "https://slack.com/oauth/authorize"
-end
-
 get "/" do
   erb :archiver
 end
@@ -200,7 +187,13 @@ def request_channel_history(number_of_messages)
 end
 
 def message_hashes_from_channel_history(messages_requested)
+  puts "**messages_requested*****"
+  puts messages_requested
+
   messages_array = messages_requested["messages"]
+
+  puts "**messages_array*****"
+  puts messages_array
 
   loop_through_message_hashes(messages_array)
 end
