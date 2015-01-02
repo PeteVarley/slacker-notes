@@ -21,38 +21,27 @@ use OmniAuth::Builder do
   provider :developer
 end
 
-class Developer
-  include OmniAuth::Strategy
-
-  option :fields, [:name, :email]
-  option :uid_field, :email
-
-  def request_phase
-    form = OmniAuth::Form.new(:title => 'User Info', :url => callback_path)
-    options.fields.each do |field|
-      form.text_field field.to_s.capitalize.gsub('_', ' '), field.to_s
-    end
-    form.button 'Sign In'
-    form.to_response
-  end
-
-  uid do
-    request.params[options.uid_field.to_s]
-  end
-
-  info do
-    options.fields.inject({}) do |hash, field|
-      hash[field] = request.params[field.to_s]
-      puts "&&&&& hash &&&&&"
-      puts hash
-      hash
-    end
-  end
-end
-
 post '/auth/developer/callback' do
+  @name = params[:name]
+  @email = params[:email]
+  puts @name
+  puts @email
 
   erb :callback
+end
+
+get '/test' do
+  puts "_____________ @client_id _____________"
+  @client_id = 3012263173.3259470988
+  puts @client_id
+  #@redirect_uri = params[:redirect_uri]
+  #@scope = params[:scope]
+  @state = 123
+  #@team = params[:team]
+
+
+  #erb :param_test
+  erb :test
 end
 
 
@@ -148,20 +137,6 @@ def save_users(users)
   else
     #add partial that displays an appropriate message on the home page
   end
-end
-
-get "/test" do
-  puts "_____________ @client_id _____________"
-  @client_id = 3012263173.3259470988
-  puts @client_id
-  #@redirect_uri = params[:redirect_uri]
-  #@scope = params[:scope]
-  @state = 123
-  #@team = params[:team]
-
-
-  #erb :param_test
-  redirect "https://slack.com/oauth/authorize"
 end
 
 get "/" do
