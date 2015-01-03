@@ -14,13 +14,6 @@ set :partial_template_engine, :erb
 
 require_relative 'models'
 
-# SLACK_API_TOKEN=ENV["SLACK"]
-# SLACK_API_TOKEN=@token
-# puts 'slack api token hardcoded'
-# puts SLACK_API_TOKEN
-# puts '@token'
-# puts @token
-
 helpers do
  #saving for later
 end
@@ -32,75 +25,8 @@ use OmniAuth::Builder do
   provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
 end
 
-# module OmniAuth
-#   module Strategies
-#     class Slack < OmniAuth::Strategies::OAuth2
-
-#       option :name, "slack"
-
-#       option :authorize_options, [ :scope, :team ]
-
-#       option :client_options, {
-#         site: "https://slack.com",
-#         token_url: "/api/oauth.access"
-#       }
-
-#       option :auth_token_params, {
-#         mode: :query,
-#         param_name: 'token'
-#       }
-
-#       uid { raw_info['user_id'] }
-
-#       info do
-#         {
-#           team: raw_info['team'],
-#           user: raw_info['user'],
-#           team_id: raw_info['team_id'],
-#           user_id: raw_info['user_id']
-#         }
-#       end
-
-#       extra do
-#         {:raw_info => raw_info}
-#       end
-
-#       def raw_info
-#         @raw_info ||= access_token.get('/api/auth.test').parsed
-#       end
-
-#     end
-#   end
-# end
-
-# get '/auth/slack/callback' do
-#   puts "ENV['SLACK_ID']"
-#   puts ENV['SLACK_ID']
-#   @client_id = ENV['SLACK_ID']
-#   @client_secret = ENV['SLACK_SECRET']
-#   @code = params[:code]
-#   @state = params[:state]
-#   puts @code
-#   puts @state
-
-#   erb :callback_slack
-# end
-
-post '/auth/developer/callback' do
-  @name = params[:name]
-  @email = params[:email]
-  puts @name
-  puts @email
-
-  erb :callback
-end
-
-get '/tester' do
+get '/slack_oauth' do
   redirect 'http://localhost:4567/auth/slack/'
-end
-
-get '/tester_github' do
-  redirect 'http://localhost:4567/auth/github/'
 end
 
 get '/auth/:provider/callback' do
