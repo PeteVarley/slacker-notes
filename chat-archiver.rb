@@ -68,7 +68,7 @@ get '/auth/:provider/callback' do
   puts "****** token ******"
   puts SLACK_API_TOKEN
 
-  erb :archiver
+  erb :home
 end
 
 get '/auth/failure' do
@@ -185,7 +185,7 @@ def save_users(users)
 end
 
 get "/" do
-  erb :archiver
+  redirect "http://localhost:4567/slack_oauth"
 end
 
 
