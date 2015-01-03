@@ -121,7 +121,7 @@ get '/auth/:provider/callback' do
   puts raw_info
 
   puts "********* user ********"
-  user = raw_info['user']
+  @user = raw_info['user']
   puts user
 
   "Hello, #{raw_info['user']}"
@@ -132,7 +132,7 @@ get '/auth/:provider/callback' do
   # @token = params[:token]
   # @user = auth['user_info']
 
-  # erb :github
+  erb :archiver
 end
 
 get '/auth/failure' do
