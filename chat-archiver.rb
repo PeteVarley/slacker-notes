@@ -5,6 +5,10 @@ require 'rubygems'
 require 'json'
 require 'date'
 require 'omniauth'
+require 'omniauth-oauth2'
+require 'omniauth/strategies/github'
+require 'omniauth/strategies/slack'
+require 'omniauth/strategies/oauth2'
 
 set :partial_template_engine, :erb
 
@@ -19,7 +23,63 @@ end
 use Rack::Session::Cookie
 use OmniAuth::Builder do
   provider :developer
+  provider :slack, ENV['SLACK_ID'], ENV['SLACK_SECRET']
+  provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
 end
+
+# module OmniAuth
+#   module Strategies
+#     class Slack < OmniAuth::Strategies::OAuth2
+
+#       option :name, "slack"
+
+#       option :authorize_options, [ :scope, :team ]
+
+#       option :client_options, {
+#         site: "https://slack.com",
+#         token_url: "/api/oauth.access"
+#       }
+
+#       option :auth_token_params, {
+#         mode: :query,
+#         param_name: 'token'
+#       }
+
+#       uid { raw_info['user_id'] }
+
+#       info do
+#         {
+#           team: raw_info['team'],
+#           user: raw_info['user'],
+#           team_id: raw_info['team_id'],
+#           user_id: raw_info['user_id']
+#         }
+#       end
+
+#       extra do
+#         {:raw_info => raw_info}
+#       end
+
+#       def raw_info
+#         @raw_info ||= access_token.get('/api/auth.test').parsed
+#       end
+
+#     end
+#   end
+# end
+
+# get '/auth/slack/callback' do
+#   puts "ENV['SLACK_ID']"
+#   puts ENV['SLACK_ID']
+#   @client_id = ENV['SLACK_ID']
+#   @client_secret = ENV['SLACK_SECRET']
+#   @code = params[:code]
+#   @state = params[:state]
+#   puts @code
+#   puts @state
+
+#   erb :callback_slack
+# end
 
 post '/auth/developer/callback' do
   @name = params[:name]
@@ -28,6 +88,55 @@ post '/auth/developer/callback' do
   puts @email
 
   erb :callback
+end
+
+get '/tester' do
+  redirect 'http://localhost:4567/auth/slack/'
+end
+
+get '/tester_github' do
+  redirect 'http://localhost:4567/auth/github/'
+end
+
+get '/auth/:provider/callback' do
+  auth = request.env['omniauth.auth']
+  puts "********* auth ********"
+  puts auth
+  puts "********* auth.class ********"
+  puts auth.class
+  puts "********* credentials ********"
+  puts auth['credentials']
+
+  puts "********* token ********"
+  credentials = auth['credentials']
+  token = credentials['token']
+  puts token
+
+  puts "********* extra ********"
+  puts auth['extra']
+  puts "****** extra hash ******"
+  extra = auth['extra']
+  raw_info = extra['raw_info']
+  puts '***** raw_info *****'
+  puts raw_info
+
+  puts "********* user ********"
+  user = raw_info['user']
+  puts user
+
+  "Hello, #{raw_info['user']}"
+  # @git_hub_client_id = "1b1883a409940b6093f6"
+  # @git_hub_client_secret = "efc27798d3f1ac0c96c2dba7b88f04f0c58e4e55"
+  # @code = params[:code]
+  # @state = params[:state]
+  # @token = params[:token]
+  # @user = auth['user_info']
+
+  # erb :github
+end
+
+get '/auth/failure' do
+  "Auth Failed"
 end
 
 get '/test' do
