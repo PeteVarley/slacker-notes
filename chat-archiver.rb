@@ -14,7 +14,12 @@ set :partial_template_engine, :erb
 
 require_relative 'models'
 
-SLACK_API_TOKEN=ENV["SLACK"]
+# SLACK_API_TOKEN=ENV["SLACK"]
+# SLACK_API_TOKEN=@token
+# puts 'slack api token hardcoded'
+# puts SLACK_API_TOKEN
+# puts '@token'
+# puts @token
 
 helpers do
  #saving for later
@@ -109,8 +114,9 @@ get '/auth/:provider/callback' do
 
   puts "********* token ********"
   credentials = auth['credentials']
-  token = credentials['token']
-  puts token
+  @token = credentials['token']
+  puts '____________________ @token ____________________'
+  puts @token
 
   puts "********* extra ********"
   puts auth['extra']
@@ -122,15 +128,19 @@ get '/auth/:provider/callback' do
 
   puts "********* user ********"
   @user = raw_info['user']
-  puts user
+  puts @user
 
-  "Hello, #{raw_info['user']}"
+  "Hello, #{raw_info['@user']}"
   # @git_hub_client_id = "1b1883a409940b6093f6"
   # @git_hub_client_secret = "efc27798d3f1ac0c96c2dba7b88f04f0c58e4e55"
   # @code = params[:code]
   # @state = params[:state]
   # @token = params[:token]
   # @user = auth['user_info']
+
+  SLACK_API_TOKEN=@token
+  puts "****** token ******"
+  puts SLACK_API_TOKEN
 
   erb :archiver
 end
@@ -257,7 +267,6 @@ end
 get "/archiver" do
   erb :archiver
 end
-
 
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
