@@ -3,6 +3,26 @@
   <div class="large-12 columns">
     <div class="panel">
       <p>Home page</p>
+      <form name ="new_archive" action="/chats" method="post" accept-charset="utf-8">
+          <label>Channel options
+            <select name="channel"> Select channel
+              <% @names.length.times do |channel_number| %>
+                <% @names[channel_number] %>
+                <% value = @names[channel_number] %>
+                <% name = value["name"] %>
+                <% id = value["id"] %>
+                  <option value=<%= id %>> <%= name %> </option>
+              <% end %>
+             </select>
+          </label>
+
+          <input type="text" name="number[chat_number]" placeholder="How many messages would you like to archive?">
+
+          <input type="submit" class="small success button" value="Archive">
+
+        </form>
+
+      <p><%= @token %></p>
     </div>
   </div>
 </div>

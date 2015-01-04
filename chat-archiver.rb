@@ -56,17 +56,18 @@ get '/auth/:provider/callback' do
   @user = raw_info['user']
   puts @user
 
-  "Hello, #{raw_info['@user']}"
-  # @git_hub_client_id = "1b1883a409940b6093f6"
-  # @git_hub_client_secret = "efc27798d3f1ac0c96c2dba7b88f04f0c58e4e55"
-  # @code = params[:code]
-  # @state = params[:state]
-  # @token = params[:token]
-  # @user = auth['user_info']
-
   SLACK_API_TOKEN=@token
   puts "****** token ******"
   puts SLACK_API_TOKEN
+
+  @channels = JSON.parse(client.channels.list)
+    puts "***** channels *****"
+    puts @channels
+    puts "***** @channels['channels'] *****"
+    puts @channels["channels"]
+    puts "***** channel names *****"
+    @names = @channels["channels"]
+    puts @names.class
 
   erb :home
 end
@@ -75,20 +76,7 @@ get '/auth/failure' do
   "Auth Failed"
 end
 
-get '/test' do
-  puts "_____________ @client_id _____________"
-  @client_id = 3012263173.3259470988
-  puts @client_id
-  #@redirect_uri = params[:redirect_uri]
-  #@scope = params[:scope]
-  @state = 123
-  #@team = params[:team]
-
-
-  #erb :param_test
-  erb :test
-end
-
+#start creating channel here, method should return channel_name
 
 def create_channel(channel_name)
   channel = Channel.first_or_create
@@ -96,6 +84,7 @@ def create_channel(channel_name)
   channel.save
 end
 
+#you will need to set the Channel here
 def create_archives
   @archives = Channel.last.archives
 end
@@ -185,10 +174,21 @@ def save_users(users)
 end
 
 get "/" do
-  redirect "http://localhost:4567/slack_oauth"
+  #this won't work until token variable is stored
+  if @token.class == NilClass
+    redirect "http://localhost:4567/slack_oauth"
+  else
+    puts "@token"
+    puts @token
+
+    test = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>1))
+    puts "***** test *****"
+    puts test
+
+    erb :home
+
+  end
 end
-
-
 
 get "/archiver" do
   erb :archiver
@@ -244,18 +244,30 @@ end
 
 def fetch_number_of_messages_user_wants_to_save
   fetch_number_param = params().fetch("number")
+  puts "**** fetch_number_param"
+  puts fetch_number_param
+
   number_of_messages(fetch_number_param)
 end
 
 def number_of_messages(fetch_number_param)
   number_of_messages = fetch_number_param[:chat_number]
+
+  puts "**** number_of_messages *****"
+  puts number_of_messages
+
   request_channel_history(number_of_messages)
 end
 
 def request_channel_history(number_of_messages)
   number = number_of_messages
 
-  channel_history_requested = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
+  fetch_channel = params().fetch("channel")
+  puts "***** fetch_channel *****"
+  puts fetch_channel
+
+#change channel
+  channel_history_requested = JSON.parse(client.channels.history(:channel=>fetch_channel,:count=>number))
   message_hashes_from_channel_history(channel_history_requested)
 end
 
@@ -343,7 +355,6 @@ post "/chats" do
   errors_saving_chat
 end
 
-
 # "/notes" do ############################################################################################################
 def get_note_id
   note_id = params[:note_id]
@@ -425,6 +436,7 @@ delete "/notes/:note_id" do
     redirect "/archive/#{note.archive_id}"
   end
 end
+
 
 # post "/chats/:num" do
 #   num = params[:num]
