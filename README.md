@@ -1,6 +1,6 @@
-# Chat Snatcher
+# Slacker Notes
 
-Snatches Slack Chat
+Archive and take notes on memorable interactions
 
 
 ## Releases
