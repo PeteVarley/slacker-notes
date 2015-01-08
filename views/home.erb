@@ -3,6 +3,10 @@
   <div class="large-12 columns">
     <div class="panel">
       <p>Home page</p>
+      <p>Team <%= @team %></p>
+      <p>Team ID <%= @team_id %></p>
+
+      @team_id
       <form name ="new_archive" action="/chats" method="post" accept-charset="utf-8">
           <label>Channel options
             <select name="channel"> Select channel
@@ -15,6 +19,10 @@
               <% end %>
              </select>
           </label>
+
+          <input type= "hidden" name="team" value=<%= @team %> >
+
+          <input type= "hidden" name="team_id" value=<%= @team_id %> >
 
           <input type="text" name="number[chat_number]" placeholder="How many messages would you like to archive?">
 

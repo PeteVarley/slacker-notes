@@ -16,6 +16,16 @@ if ENV['RACK_ENV'] == "production"
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
+class Team
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :team_name, String
+  property :team_id, String
+
+  has n, :users
+end
+
 class Channel
   include DataMapper::Resource
 
@@ -23,7 +33,6 @@ class Channel
   property :name, String, { :required => true }
   property :website, String, { :format => :url }
 
-  has n, :users
   has n, :archives
 end
 
@@ -45,8 +54,9 @@ class User
   property :email, String
   property :updated_at, DateTime
   property :created_at, DateTime
+  property :token, String
 
-  belongs_to :channel
+  belongs_to :team, :required => false
 
 end
 

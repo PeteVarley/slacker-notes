@@ -1,6 +1,6 @@
 # create channel and create/ updates users should be part of the sign in process now.
 
-require_relative 'chat-archiver.rb'
+require_relative 'slacker-notes.rb'
 require 'json'
 
 

@@ -56,6 +56,14 @@ get '/auth/:provider/callback' do
   @user = raw_info['user']
   puts @user
 
+  puts "********* team ********"
+  @team = raw_info['team']
+  puts @team
+
+  puts "********* team_id ********"
+  @team_id = raw_info['team_id']
+  puts @team_id
+
   SLACK_API_TOKEN=@token
   puts "****** token ******"
   puts SLACK_API_TOKEN
@@ -99,7 +107,7 @@ end
 
 def parse_users_list(client)
   # Slack users.list
-  #https://api.slack.com/methods/users.list
+  # https://api.slack.com/methods/users.list
   users_data = JSON.parse(client.users.list)
   channel_members_data = users_data["members"]
 
@@ -238,6 +246,23 @@ def save_archives(archives)
   @archives.save
 end
 
+#team is the container for the next sequence of events
+#build out team
+
+def build_out_team
+  team = params().fetch("team")
+  puts "***** puts team line 254 *****"
+  team_id = params().fetch("team_id")
+  puts "***** puts team_id line 256 *****"
+
+  puts "***** Team.team *****"
+  puts team
+
+  team = Team.first_or_create(:team_name => @team, :team_id => team_id)
+
+  team.save
+end
+
 def archive_this_chat
   fetch_number_of_messages_user_wants_to_save
 end
@@ -348,6 +373,8 @@ def errors_saving_chat
 end
 
 post "/chats" do
+
+  build_out_team
   create_archives
   create_current_archvie
 
