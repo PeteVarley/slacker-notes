@@ -93,13 +93,26 @@ def create_channel(channel_name)
 end
 
 #you will need to set the Channel here
-def create_archives
-  @archives = Channel.last.archives
-end
+# def create_archives
+#   @archives = Channel.last.archives
+#   puts "***** @archives *****"
+#   puts @archives
+# end
 
-def create_current_archive
-  @current_archive = Archive.create(:ts => Time.now)
-end
+# def create_current_archive
+#   @current_archive = Archive.create(:ts => Time.now)
+#   puts "***** @current_archive *****"
+#   puts @current_archive
+# end
+
+###### Users
+# create users after Team is created
+
+
+
+
+
+
 
 def create_or_update_users(client)
   parse_users_list(client)
@@ -169,11 +182,14 @@ def update_or_create_member_information_hash(member_information_hash)
 end
 
 def add_users_to_user(user)
+  @users = Team.last.users
   @users << user
   save_users(@users)
 end
 
 def save_users(users)
+  puts "***** users.save *****"
+  puts @users.save
   if @users.save
     #users are saved
   else
@@ -220,8 +236,16 @@ end
 
 get("/archive/:id") do
   @archive = Archive.get params[:id]
+  puts "***** @archive *****"
+  puts @archive
+
+  puts "***** @archive.chats ******"
+  puts @archive.chats
+  @archive.chats
 
   @users = User.all
+  puts "***** @users *****"
+  puts @users
 
   @users.each do |user|
     user["slack_id"]
@@ -233,17 +257,23 @@ end
 
 # "/chats" do ############################################################################################################
 
-def create_current_archvie
+def create_current_archive
   @current_archive = Archive.create(:ts => Time.now)
   add_current_archive_to_archives(@current_archive)
 end
 
 def add_current_archive_to_archives(current_archive)
-  @archives << @current_archive
+  @archives = Channel.last.archives
+  @archives << current_archive
+  save_archives(@archives)
 end
 
 def save_archives(archives)
-  @archives.save
+  puts "***** archives *****"
+  puts archives
+  puts "***** did archive save? *****"
+  puts archives.save
+  archives.save
 end
 
 #team is the container for the next sequence of events
@@ -254,14 +284,34 @@ def build_out_team
   puts "***** puts team line 254 *****"
   team_id = params().fetch("team_id")
   puts "***** puts team_id line 256 *****"
-
+  puts team_id
   puts "***** Team.team *****"
   puts team
 
   team = Team.first_or_create(:team_name => @team, :team_id => team_id)
 
+  puts "****** team.save *****"
+  puts team.save
   team.save
+
+  create_or_update_users(client)
 end
+
+# create and save channel
+
+def create_or_update_channel
+  fetch_channel = params().fetch("channel")
+  puts "***** fetch_channel *****"
+  puts fetch_channel
+  channel = Channel.first_or_create(:name => fetch_channel)
+
+  puts "*** channel that will be saved"
+  puts channel
+  puts "***** channel.save true? *****"
+  puts channel.save
+  channel.save
+end
+
 
 def archive_this_chat
   fetch_number_of_messages_user_wants_to_save
@@ -287,22 +337,32 @@ end
 def request_channel_history(number_of_messages)
   number = number_of_messages
 
-  fetch_channel = params().fetch("channel")
-  puts "***** fetch_channel *****"
-  puts fetch_channel
+  puts '***** Channel name *****'
+  puts Channel.last.name
+  channel_name = Channel.last.name
+  puts channel_name
+
+  #I need to store the channel number and put it as the :channel => value
 
 #change channel
-  channel_history_requested = JSON.parse(client.channels.history(:channel=>fetch_channel,:count=>number))
+  puts '***** channel history requested *****'
+  channel_history_requested = JSON.parse(client.channels.history(:channel=>channel_name,:count=>number))
+  puts channel_history_requested
   message_hashes_from_channel_history(channel_history_requested)
 end
 
 def message_hashes_from_channel_history(messages_requested)
   messages_array = messages_requested["messages"]
+  puts "***** messages_array *****"
+  puts messages_array
 
   loop_through_message_hashes(messages_array)
 end
 
 def loop_through_message_hashes(messages_array)
+  puts "messages_array"
+  puts messages_array
+
   messages_array.length.times do |message_number|
     get_each_hash_from_messages_array(messages_array,message_number)
   end
@@ -310,6 +370,8 @@ end
 
 def get_each_hash_from_messages_array(messages_array,message_number)
   slack_message_hash = messages_array[message_number]
+  puts "***** slack_message_hash *****"
+  puts slack_message_hash
 
   build_message_hash_for_chat_archive(slack_message_hash)
 end
@@ -317,8 +379,12 @@ end
 def build_message_hash_for_chat_archive(slack_message_hash)
 
   @user = slack_message_hash["user"]
+  puts "***** @user *****"
+  puts @user
 
   @text = slack_message_hash["text"]
+  puts "***** @text *****"
+  puts @text
 
   @attachments = slack_message_hash["attachments"]
 
@@ -347,16 +413,39 @@ def build_message_hash_for_chat_archive(slack_message_hash)
   end
 
   @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+
+  puts "***** @chat *****"
+  puts @chat
   add_chat_to_current_archive(@chat)
 end
 
 def add_chat_to_current_archive(chat)
+  puts "***** @current_archive *****"
+  puts @current_archive
+
   @current_archive.chats << @chat
   save_chat(@current_archive)
 end
 
 def save_chat(current_archive)
-  @current_archive.save
+  puts "***** current_archive *****"
+  puts current_archive
+
+  puts "****** current_archive true? ******"
+  puts current_archive.save == true
+
+  if @current_archive.save
+     # my_account is valid and has been saved
+  else
+    puts 'chats errors any'
+    puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+    @current_archive.chats.each do |chat|
+      chat.errors.each do |error|
+        p error
+      end
+    end
+  end
 end
 
 def errors_saving_chat
@@ -375,11 +464,14 @@ end
 post "/chats" do
 
   build_out_team
-  create_archives
-  create_current_archvie
+  create_or_update_channel
+
+ # create_archives
+  create_current_archive
 
   archive_this_chat
   errors_saving_chat
+
 end
 
 # "/notes" do ############################################################################################################

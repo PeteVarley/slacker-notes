@@ -14,8 +14,8 @@
                 <% @names[channel_number] %>
                 <% value = @names[channel_number] %>
                 <% name = value["name"] %>
-                <% id = value["id"] %>
-                  <option value=<%= id %>> <%= name %> </option>
+                <% @id = value["id"] %>
+                  <option value=<%= @id %>> <%= name %> </option>
               <% end %>
              </select>
           </label>
