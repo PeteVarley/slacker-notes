@@ -84,36 +84,6 @@ get '/auth/failure' do
   "Auth Failed"
 end
 
-#start creating channel here, method should return channel_name
-
-def create_channel(channel_name)
-  channel = Channel.first_or_create
-  channel.name = channel_name
-  channel.save
-end
-
-#you will need to set the Channel here
-# def create_archives
-#   @archives = Channel.last.archives
-#   puts "***** @archives *****"
-#   puts @archives
-# end
-
-# def create_current_archive
-#   @current_archive = Archive.create(:ts => Time.now)
-#   puts "***** @current_archive *****"
-#   puts @current_archive
-# end
-
-###### Users
-# create users after Team is created
-
-
-
-
-
-
-
 def create_or_update_users(client)
   parse_users_list(client)
 end
@@ -297,22 +267,6 @@ def build_out_team
   create_or_update_users(client)
 end
 
-# create and save channel
-
-def create_or_update_channel
-  fetch_channel = params().fetch("channel")
-  puts "***** fetch_channel *****"
-  puts fetch_channel
-  channel = Channel.first_or_create(:name => fetch_channel)
-
-  puts "*** channel that will be saved"
-  puts channel
-  puts "***** channel.save true? *****"
-  puts channel.save
-  channel.save
-end
-
-
 def archive_this_chat
   fetch_number_of_messages_user_wants_to_save
 end
@@ -337,16 +291,20 @@ end
 def request_channel_history(number_of_messages)
   number = number_of_messages
 
-  puts '***** Channel name *****'
-  puts Channel.last.name
-  channel_name = Channel.last.name
-  puts channel_name
+  fetch_channel = params().fetch("channel")
+  puts "***** fetch_channel *****"
+  puts fetch_channel
+  channel = Channel.first_or_create(:name => fetch_channel)
 
-  #I need to store the channel number and put it as the :channel => value
+  puts "*** channel that will be saved"
+  puts channel.name
+  puts channel.id
+  puts "***** channel.save true? *****"
+  puts channel.save
+  channel.save
 
-#change channel
   puts '***** channel history requested *****'
-  channel_history_requested = JSON.parse(client.channels.history(:channel=>channel_name,:count=>number))
+  channel_history_requested = JSON.parse(client.channels.history(:channel=>channel.name,:count=>number))
   puts channel_history_requested
   message_hashes_from_channel_history(channel_history_requested)
 end
@@ -464,9 +422,6 @@ end
 post "/chats" do
 
   build_out_team
-  create_or_update_channel
-
- # create_archives
   create_current_archive
 
   archive_this_chat
