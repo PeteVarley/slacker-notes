@@ -12,6 +12,7 @@
 .env
 chat_archiver.db
 *.db
+/Original_model_prototype_for_Slack_Integration.txt
 /views/Test
 /emoji_test.rb
 /notes/emoji_test.rb
