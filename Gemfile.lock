@@ -106,7 +106,6 @@ GEM
       omniauth (~> 1.2)
     omniauth-slack (1.0.1)
       omniauth-oauth2 (~> 1.2.0)
->>>>>>> Alpha
     pg (0.17.1)
     rack (1.5.2)
     rack-protection (1.5.3)
@@ -148,13 +147,12 @@ DEPENDENCIES
   dm-sqlite-adapter
   dotenv
   json
-<<<<<<< HEAD
   omniauth
-=======
+
   omniauth-github
   omniauth-oauth2
   omniauth-slack
->>>>>>> Alpha
+
   pg
   rake
   rerun
