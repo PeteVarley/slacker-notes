@@ -186,8 +186,6 @@ get "/auth" do
   # erb :test
   redirect "http://localhost:4567/slack_oauth"
 end
-
->>>>>>> Alpha:slacker-notes.rb
 get "/" do
 
 

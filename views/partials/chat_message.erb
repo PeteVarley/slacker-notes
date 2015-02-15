@@ -1,12 +1,5 @@
 <% chat["user"] %>
 
-<<<<<<< HEAD
-  <div class="message_container">
-    <div class="small-1 large-1 columns">
-      <div class="profile_image">
-        <img src=<%= author["image_48"] %>
-      </div>
-=======
 <% author = User.first(:slack_id => chat["user"]) %>
 
 <% author %>
@@ -15,7 +8,6 @@
   <div class="small-1 large-1 columns">
     <div class="profile_image">
       <img src=<%= author["image_48"] %>>
->>>>>>> Alpha
     </div>
   </div>
 
