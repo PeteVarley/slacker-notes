@@ -5,29 +5,96 @@ require 'rubygems'
 require 'json'
 require 'date'
 require 'omniauth'
+<<<<<<< HEAD:chat-archiver.rb
+=======
+require 'omniauth-oauth2'
+require 'omniauth/strategies/github'
+require 'omniauth/strategies/slack'
+require 'omniauth/strategies/oauth2'
+>>>>>>> Alpha:slacker-notes.rb
 
 set :partial_template_engine, :erb
 
 require_relative 'models'
 
-SLACK_API_TOKEN=ENV["SLACK"]
-
 helpers do
  #saving for later
 end
 
-def create_channel(channel_name)
-  channel = Channel.first_or_create
-  channel.name = channel_name
-  channel.save
+use Rack::Session::Cookie
+use OmniAuth::Builder do
+  provider :developer
+  provider :slack, ENV['SLACK_ID'], ENV['SLACK_SECRET']
+  provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
 end
 
-def create_archives
-  @archives = Channel.last.archives
+get '/slack_oauth' do
+  redirect 'http://localhost:4567/auth/slack/'
 end
 
-def create_current_archive
-  @current_archive = Archive.create(:ts => Time.now)
+get '/auth/:provider/callback' do
+  auth = request.env['omniauth.auth']
+  puts @name
+  puts "********* auth ********"
+  puts auth
+  puts "********* auth.class ********"
+  puts auth.class
+  puts "********* credentials ********"
+  puts auth['credentials']
+
+  puts "********* token ********"
+  credentials = auth['credentials']
+  @token = credentials['token']
+  puts '____________________ @token ____________________'
+  puts @token
+
+  id = User.id
+  puts User.first(:id => id)
+  user = User.first()
+  puts '______ user ______'
+  puts user
+  user.update(:token => @token)
+  puts 'User id'
+  puts User.id
+
+  puts "********* extra ********"
+  puts auth['extra']
+  puts "****** extra hash ******"
+  extra = auth['extra']
+  raw_info = extra['raw_info']
+  puts '***** raw_info *****'
+  puts raw_info
+
+  puts "********* user ********"
+  @user = raw_info['user']
+  puts @user
+
+  puts "********* team ********"
+  @team = raw_info['team']
+  puts @team
+
+  puts "********* team_id ********"
+  @team_id = raw_info['team_id']
+  puts @team_id
+
+  SLACK_API_TOKEN=@token
+  puts "****** token ******"
+  puts SLACK_API_TOKEN
+
+  @channels = JSON.parse(client.channels.list)
+    puts "***** channels *****"
+    puts @channels
+    puts "***** @channels['channels'] *****"
+    puts @channels["channels"]
+    puts "***** channel names *****"
+    @names = @channels["channels"]
+    puts @names.class
+
+  erb :home
+end
+
+get '/auth/failure' do
+  "Auth Failed"
 end
 
 def create_or_update_users(client)
@@ -36,7 +103,7 @@ end
 
 def parse_users_list(client)
   # Slack users.list
-  #https://api.slack.com/methods/users.list
+  # https://api.slack.com/methods/users.list
   users_data = JSON.parse(client.users.list)
   channel_members_data = users_data["members"]
 
@@ -98,11 +165,14 @@ def update_or_create_member_information_hash(member_information_hash)
 end
 
 def add_users_to_user(user)
+  @users = Team.last.users
   @users << user
   save_users(@users)
 end
 
 def save_users(users)
+  puts "***** users.save *****"
+  puts @users.save
   if @users.save
     #users are saved
   else
@@ -110,16 +180,29 @@ def save_users(users)
   end
 end
 
-get "/" do
-  erb :archiver
+<<<<<<< HEAD:chat-archiver.rb
+=======
+get "/auth" do
+  #this won't work until token variable is stored
+  # puts "*** users information ***"
+  # puts User.last.name
+  # @user = User.last.name
+  # puts @user
+  # erb :test
+  redirect "http://localhost:4567/slack_oauth"
 end
 
+>>>>>>> Alpha:slacker-notes.rb
+get "/" do
 
+
+    erb :welcome
+
+end
 
 get "/archiver" do
   erb :archiver
 end
-
 
 def client
   client = Slack::Client.new(token: SLACK_API_TOKEN)
@@ -131,6 +214,10 @@ get("/users") do
   erb :users
 end
 
+def create_archives
+  @archives = Channel.last.archives
+end
+
 get "/archives" do
   create_archives
 
@@ -139,8 +226,16 @@ end
 
 get("/archive/:id") do
   @archive = Archive.get params[:id]
+  puts "***** @archive *****"
+  puts @archive
+
+  puts "***** @archive.chats ******"
+  puts @archive.chats
+  @archive.chats
 
   @users = User.all
+  puts "***** @users *****"
+  puts @users
 
   @users.each do |user|
     user["slack_id"]
@@ -152,17 +247,44 @@ end
 
 # "/chats" do ############################################################################################################
 
-def create_current_archvie
+def create_current_archive
   @current_archive = Archive.create(:ts => Time.now)
   add_current_archive_to_archives(@current_archive)
 end
 
 def add_current_archive_to_archives(current_archive)
-  @archives << @current_archive
+  @archives = Channel.last.archives
+  @archives << current_archive
+  save_archives(@archives)
 end
 
 def save_archives(archives)
-  @archives.save
+  puts "***** archives *****"
+  puts archives
+  puts "***** did archive save? *****"
+  puts archives.save
+  archives.save
+end
+
+#team is the container for the next sequence of events
+#build out team
+
+def build_out_team
+  team = params().fetch("team")
+  puts "***** puts team line 254 *****"
+  team_id = params().fetch("team_id")
+  puts "***** puts team_id line 256 *****"
+  puts team_id
+  puts "***** Team.team *****"
+  puts team
+
+  team = Team.first_or_create(:team_name => @team, :team_id => team_id)
+
+  puts "****** team.save *****"
+  puts team.save
+  team.save
+
+  create_or_update_users(client)
 end
 
 def archive_this_chat
@@ -171,18 +293,39 @@ end
 
 def fetch_number_of_messages_user_wants_to_save
   fetch_number_param = params().fetch("number")
+  puts "**** fetch_number_param"
+  puts fetch_number_param
+
   number_of_messages(fetch_number_param)
 end
 
 def number_of_messages(fetch_number_param)
   number_of_messages = fetch_number_param[:chat_number]
+
+  puts "**** number_of_messages *****"
+  puts number_of_messages
+
   request_channel_history(number_of_messages)
 end
 
 def request_channel_history(number_of_messages)
   number = number_of_messages
 
-  channel_history_requested = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>number))
+  fetch_channel = params().fetch("channel")
+  puts "***** fetch_channel *****"
+  puts fetch_channel
+  channel = Channel.first_or_create(:name => fetch_channel)
+
+  puts "*** channel that will be saved"
+  puts channel.name
+  puts channel.id
+  puts "***** channel.save true? *****"
+  puts channel.save
+  channel.save
+
+  puts '***** channel history requested *****'
+  channel_history_requested = JSON.parse(client.channels.history(:channel=>channel.name,:count=>number))
+  puts channel_history_requested
   message_hashes_from_channel_history(channel_history_requested)
 end
 
@@ -191,6 +334,8 @@ def message_hashes_from_channel_history(messages_requested)
   puts messages_requested
 
   messages_array = messages_requested["messages"]
+  puts "***** messages_array *****"
+  puts messages_array
 
   puts "**messages_array*****"
   puts messages_array
@@ -199,6 +344,9 @@ def message_hashes_from_channel_history(messages_requested)
 end
 
 def loop_through_message_hashes(messages_array)
+  puts "messages_array"
+  puts messages_array
+
   messages_array.length.times do |message_number|
     get_each_hash_from_messages_array(messages_array,message_number)
   end
@@ -206,6 +354,8 @@ end
 
 def get_each_hash_from_messages_array(messages_array,message_number)
   slack_message_hash = messages_array[message_number]
+  puts "***** slack_message_hash *****"
+  puts slack_message_hash
 
   build_message_hash_for_chat_archive(slack_message_hash)
 end
@@ -213,8 +363,12 @@ end
 def build_message_hash_for_chat_archive(slack_message_hash)
 
   @user = slack_message_hash["user"]
+  puts "***** @user *****"
+  puts @user
 
   @text = slack_message_hash["text"]
+  puts "***** @text *****"
+  puts @text
 
   @attachments = slack_message_hash["attachments"]
 
@@ -243,16 +397,39 @@ def build_message_hash_for_chat_archive(slack_message_hash)
   end
 
   @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+
+  puts "***** @chat *****"
+  puts @chat
   add_chat_to_current_archive(@chat)
 end
 
 def add_chat_to_current_archive(chat)
+  puts "***** @current_archive *****"
+  puts @current_archive
+
   @current_archive.chats << @chat
   save_chat(@current_archive)
 end
 
 def save_chat(current_archive)
-  @current_archive.save
+  puts "***** current_archive *****"
+  puts current_archive
+
+  puts "****** current_archive true? ******"
+  puts current_archive.save == true
+
+  if @current_archive.save
+     # my_account is valid and has been saved
+  else
+    puts 'chats errors any'
+    puts @current_archive.chats.any? { |chat| chat.errors.any? }
+
+    @current_archive.chats.each do |chat|
+      chat.errors.each do |error|
+        p error
+      end
+    end
+  end
 end
 
 def errors_saving_chat
@@ -269,13 +446,14 @@ def errors_saving_chat
 end
 
 post "/chats" do
-  create_archives
-  create_current_archvie
+
+  build_out_team
+  create_current_archive
 
   archive_this_chat
   errors_saving_chat
-end
 
+end
 
 # "/notes" do ############################################################################################################
 def get_note_id
@@ -358,6 +536,7 @@ delete "/notes/:note_id" do
     redirect "/archive/#{note.archive_id}"
   end
 end
+
 
 # post "/chats/:num" do
 #   num = params[:num]

@@ -1,11 +1,8 @@
-require_relative 'chat-archiver.rb'
+# create channel and create/ updates users should be part of the sign in process now.
+
+require_relative 'slacker-notes.rb'
 require 'json'
 
-channel_name = 'web-fundamentals'
-
-task :create_channel do
-  create_channel(channel_name)
-end
 
 task :create_users do
 

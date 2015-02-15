@@ -12,6 +12,12 @@
 .env
 chat_archiver.db
 *.db
+/Original_model_prototype_for_Slack_Integration.txt
+/views/Test
+/emoji_test.rb
+/notes/emoji_test.rb
+/slacker-notes.rb
+/Terminal_Saved_Output.txt
 
 ## Specific to RubyMotion:
 .dat*
@@ -37,3 +43,4 @@ build/
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 chat_archiver.db
+

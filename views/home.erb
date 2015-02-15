@@ -1,8 +1,31 @@
 <div class="row">
-  <div class="large-12 columns"><h1>Welcome to Chat Archiver</h1></div>
+  <div class="large-12 columns"><h1>Welcome to Slacker Notes</h1></div>
   <div class="large-12 columns">
     <div class="panel">
-      <p>Home page</p>
+      <% @team_id %>
+
+      <form name ="new_archive" action="/chats" method="post" accept-charset="utf-8">
+          <label>Pick the channel you would like to save a chat from
+            <select name="channel"> Select channel
+              <% @names.length.times do |channel_number| %>
+                <% @names[channel_number] %>
+                <% value = @names[channel_number] %>
+                <% name = value["name"] %>
+                <% @id = value["id"] %>
+                  <option value=<%= @id %>> <%= name %> </option>
+              <% end %>
+             </select>
+          </label>
+
+          <input type= "hidden" name="team" value=<%= @team %> >
+
+          <input type= "hidden" name="team_id" value=<%= @team_id %> >
+
+          <input type="text" name="number[chat_number]" placeholder="How many messages would you like to archive?">
+
+          <input type="submit" class="small success button" value="Archive">
+
+        </form>
     </div>
   </div>
 </div>
