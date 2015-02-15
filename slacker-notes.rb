@@ -5,13 +5,10 @@ require 'rubygems'
 require 'json'
 require 'date'
 require 'omniauth'
-<<<<<<< HEAD:chat-archiver.rb
-=======
 require 'omniauth-oauth2'
 require 'omniauth/strategies/github'
 require 'omniauth/strategies/slack'
 require 'omniauth/strategies/oauth2'
->>>>>>> Alpha:slacker-notes.rb
 
 set :partial_template_engine, :erb
 
