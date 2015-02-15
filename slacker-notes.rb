@@ -177,8 +177,6 @@ def save_users(users)
   end
 end
 
-<<<<<<< HEAD:chat-archiver.rb
-=======
 get "/auth" do
   #this won't work until token variable is stored
   # puts "*** users information ***"
