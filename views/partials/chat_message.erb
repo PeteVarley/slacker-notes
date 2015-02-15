@@ -1,9 +1,8 @@
-require emoji_test.rb
-<%= chat["user"] %>
+<% chat["user"] %>
 
 <% author = User.first(:slack_id => chat["user"]) %>
 
-<%= author %>
+<% author %>
 
 <div class="message_container">
   <div class="small-1 large-1 columns">

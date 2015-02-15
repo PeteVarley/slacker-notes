@@ -1,17 +1,11 @@
 <div class="row">
-  <div class="large-12 columns"><h1>Welcome to Chat Archiver</h1></div>
+  <div class="large-12 columns"><h1>Welcome to Slacker Notes</h1></div>
   <div class="large-12 columns">
     <div class="panel">
-      <p>Home page</p>
-      <p>Team <%= @team %></p>
-      <p>Team ID <%= @team_id %></p>
-      <p><%= @user %></p>
-      <p><%= @first_name %></p>
+      <% @team_id %>
 
-
-      <%= @team_id %>
       <form name ="new_archive" action="/chats" method="post" accept-charset="utf-8">
-          <label>Channel options
+          <label>Pick the channel you would like to save a chat from
             <select name="channel"> Select channel
               <% @names.length.times do |channel_number| %>
                 <% @names[channel_number] %>
@@ -22,7 +16,6 @@
               <% end %>
              </select>
           </label>
-          <p><%= @token %></p>
 
           <input type= "hidden" name="team" value=<%= @team %> >
 
@@ -33,8 +26,6 @@
           <input type="submit" class="small success button" value="Archive">
 
         </form>
-
-      <p><%= @token %></p>
     </div>
   </div>
 </div>
