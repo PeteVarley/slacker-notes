@@ -12,6 +12,9 @@
 .env
 chat_archiver.db
 *.db
+/views/Test
+/emoji_test.rb
+/notes/emoji_test.rb
 /slacker-notes.rb
 /Terminal_Saved_Output.txt
 
