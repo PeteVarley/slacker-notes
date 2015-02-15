@@ -1,6 +1,5 @@
+require emoji_test.rb
 <%= chat["user"] %>
-
-<%= User.first.name %>
 
 <% author = User.first(:slack_id => chat["user"]) %>
 
@@ -24,8 +23,13 @@
       <div class="message">
         <% chat_text = chat["text"] %>
 
+<%#emoji code%>
+
+        <%# emoji.values_at(":simple_smile:") %>
         <% if /:simple_smile:/.match(chat_text) %>
           <span class="emoji emoji-sizer" style="background-image:url(https://slack.global.ssl.fastly.net/26648/img/emoji/simple_smile.png)" title="simple_smile">:simple_smile:</span>
+
+
 
         <% elsif /(.*)http:(.*)/.match(chat_text)  %>
         <% url = /(?<=<).*?(?=(>))/.match(chat_text) %>
@@ -33,7 +37,6 @@
         <div class="author_link">
           <a href="<%= url = /(?<=<).*?(?=(>))/.match(chat_text) %>"><%= url %></a>
         </div>
-
 
         <div class="inline_attachment_wrapper">
           <div class="attachment_bar" style="background:#e3e4e6;">

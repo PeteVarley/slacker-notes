@@ -5,8 +5,11 @@
       <p>Home page</p>
       <p>Team <%= @team %></p>
       <p>Team ID <%= @team_id %></p>
+      <p><%= @user %></p>
+      <p><%= @first_name %></p>
 
-      @team_id
+
+      <%= @team_id %>
       <form name ="new_archive" action="/chats" method="post" accept-charset="utf-8">
           <label>Channel options
             <select name="channel"> Select channel
@@ -19,6 +22,7 @@
               <% end %>
              </select>
           </label>
+          <p><%= @token %></p>
 
           <input type= "hidden" name="team" value=<%= @team %> >
 

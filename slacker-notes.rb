@@ -31,6 +31,7 @@ end
 
 get '/auth/:provider/callback' do
   auth = request.env['omniauth.auth']
+  puts @name
   puts "********* auth ********"
   puts auth
   puts "********* auth.class ********"
@@ -43,6 +44,15 @@ get '/auth/:provider/callback' do
   @token = credentials['token']
   puts '____________________ @token ____________________'
   puts @token
+
+  id = User.id
+  puts User.first(:id => id)
+  user = User.first()
+  puts '______ user ______'
+  puts user
+  user.update(:token => @token)
+  puts 'User id'
+  puts User.id
 
   puts "********* extra ********"
   puts auth['extra']
@@ -167,21 +177,21 @@ def save_users(users)
   end
 end
 
-get "/" do
+get "/auth" do
   #this won't work until token variable is stored
-  if @token.class == NilClass
-    redirect "http://localhost:4567/slack_oauth"
-  else
-    puts "@token"
-    puts @token
+  # puts "*** users information ***"
+  # puts User.last.name
+  # @user = User.last.name
+  # puts @user
+  # erb :test
+  redirect "http://localhost:4567/slack_oauth"
+end
 
-    test = JSON.parse(client.channels.history(:channel=>ENV["SLACK_CHANNEL"],:count=>1))
-    puts "***** test *****"
-    puts test
+get "/" do
 
-    erb :home
 
-  end
+    erb :welcome
+
 end
 
 get "/archiver" do
@@ -196,6 +206,10 @@ get("/users") do
   @users = Channel.last.users
 
   erb :users
+end
+
+def create_archives
+  @archives = Channel.last.archives
 end
 
 get "/archives" do

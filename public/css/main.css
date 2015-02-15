@@ -14,6 +14,19 @@ header h1 {
   font-size: 1.5em;
 }
 
+body {
+  width: 100%;
+  display:block;
+  font-family: 'Lato',sans-serif;
+  color: #555459;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 300;
+  background: white;
+  overflow-x: hidden;
+  -webkit-transition: translate3d(0,0,0);
+}
+
 
 
 
@@ -223,7 +236,7 @@ img.emoji {
 }
 
 .large-11 {
-width: 100%;
+  width: 100%;
 }
 
 
@@ -280,3 +293,11 @@ width: 100%;
 .users li { margin-bottom: 2.5em; }
 
 .users li h4 { margin-bottom: 0; }
+
+.archive_links {
+  color: #333333;
+}
+
+
+
+
