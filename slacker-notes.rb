@@ -26,7 +26,8 @@ use OmniAuth::Builder do
 end
 
 get '/slack_oauth' do
-  redirect 'http://localhost:4567/auth/slack/'
+  #redirect 'http://localhost:4567/auth/slack/'
+  redirect 'http://slacker-notes.herokuapp.com'
 end
 
 get '/auth/:provider/callback' do
