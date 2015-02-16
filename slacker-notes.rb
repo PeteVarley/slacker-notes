@@ -321,6 +321,7 @@ def request_channel_history(number_of_messages)
   puts channel.name
   puts channel.id
   puts "***** channel.save true? *****"
+  puts channel.errors
   puts channel.save
   channel.save
 
