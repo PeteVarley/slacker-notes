@@ -46,13 +46,14 @@ get '/auth/:provider/callback' do
   puts '____________________ @token ____________________'
   puts @token
 
-  id = User.id
-  puts User.first(:id => id)
-  user = User.first()
-  puts '______ user ______'
-  puts user
-  puts 'User id'
-  puts User.id
+  # id = User.id
+  # puts User.first(:id => id)
+  # user = User.first()
+  # puts '______ user ______'
+  # puts user
+  # user.update(:token => @token)
+  # puts 'User id'
+  # puts User.id
 
   puts "********* extra ********"
   puts auth['extra']
