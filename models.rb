@@ -30,7 +30,7 @@ class Channel
   include DataMapper::Resource
 
   property :id, Serial
-  property :name, String, { :required => true }
+  property :name, String
   property :website, String, { :format => :url }
 
   has n, :archives
