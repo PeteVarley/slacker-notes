@@ -22,6 +22,7 @@ class Team
   property :id, Serial
   property :team_name, String
   property :team_id, String
+  property :channel_id, String
 
   has n, :users
 end
