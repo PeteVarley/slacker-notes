@@ -22,7 +22,6 @@ class Team
   property :id, Serial
   property :team_name, String
   property :team_id, String
-  property :channel_id, String
 
   has n, :users
 end
@@ -31,8 +30,9 @@ class Channel
   include DataMapper::Resource
 
   property :id, Serial
-  property :name, String
+  property :name, String, { :required => true }
   property :website, String, { :format => :url }
+  property :channel_id, Integer
 
   has n, :archives
 end
