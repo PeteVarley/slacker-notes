@@ -51,7 +51,6 @@ get '/auth/:provider/callback' do
   user = User.first()
   puts '______ user ______'
   puts user
-  user.update(:token => @token)
   puts 'User id'
   puts User.id
 
