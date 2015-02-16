@@ -310,7 +310,12 @@ def request_channel_history(number_of_messages)
   fetch_channel = params().fetch("channel")
   puts "***** fetch_channel *****"
   puts fetch_channel
+  if Channel.name != null
   channel = Channel.first_or_create(:name => fetch_channel)
+  else
+    channel = Channel.first_or_create(:name => "no_name")
+  end
+
 
   puts "*** channel that will be saved"
   puts channel.name

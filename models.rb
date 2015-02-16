@@ -32,7 +32,6 @@ class Channel
   property :id, Serial
   property :name, String, { :required => true }
   property :website, String, { :format => :url }
-  property :channel_id, Integer
 
   has n, :archives
 end
