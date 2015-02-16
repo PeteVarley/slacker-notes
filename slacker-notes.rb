@@ -88,6 +88,7 @@ get '/auth/:provider/callback' do
     @names = @channels["channels"]
     puts @names.class
 
+
   erb :home
 end
 
@@ -255,6 +256,8 @@ def create_current_archive
 end
 
 def add_current_archive_to_archives(current_archive)
+  fetch_channel = params().fetch("channel")
+  channel = Channel.first_or_create(:name => fetch_channel)
   @archives = Channel.last.archives
   @archives << current_archive
   save_archives(@archives)
