@@ -65,4 +65,3 @@ Archive and take notes on memorable interactions
 - [ ] Slack shortcut authenicates Slacker Notes
 
 
-[![Stories in Ready](https://badge.waffle.io/petevarley/slacker-notes.png?label=ready&title=Ready)](http://waffle.io/petevarley/slacker-notes)
