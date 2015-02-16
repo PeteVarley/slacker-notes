@@ -27,7 +27,7 @@ end
 
 get '/slack_oauth' do
   #redirect 'http://localhost:4567/auth/slack/'
-  redirect 'http://slacker-notes.herokuapp.com'
+  redirect 'http://slacker-notes.herokuapp.com/auth/slack/'
 end
 
 get '/auth/:provider/callback' do
@@ -185,7 +185,7 @@ get "/auth" do
   # @user = User.last.name
   # puts @user
   # erb :test
-  redirect "http://localhost:4567/slack_oauth"
+  redirect "http://slacker-notes.herokuapp.com/slack_oauth"
 end
 get "/" do
 
