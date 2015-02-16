@@ -175,6 +175,12 @@ def save_users(users)
     #users are saved
   else
     #add partial that displays an appropriate message on the home page
+    @users.any? { |user| user.errors.any? }
+      @users.each do |user|
+        user.errors.each do |user|
+          p user
+        end
+      end
   end
 end
 
@@ -310,11 +316,7 @@ def request_channel_history(number_of_messages)
   fetch_channel = params().fetch("channel")
   puts "***** fetch_channel *****"
   puts fetch_channel
-  if Channel.name != null
   channel = Channel.first_or_create(:name => fetch_channel)
-  else
-    channel = Channel.first_or_create(:name => "no_name")
-  end
 
 
   puts "*** channel that will be saved"
