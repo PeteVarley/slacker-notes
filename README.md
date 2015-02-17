@@ -66,3 +66,5 @@ Archive and take notes on memorable interactions
 
 
 [![Stories in Ready](https://badge.waffle.io/petevarley/slacker-notes.png?label=ready&title=Ready)](http://waffle.io/petevarley/slacker-notes)
+
+[![Throughput Graph](https://graphs.waffle.io/petevarley/slacker-notes/throughput.svg)](https://waffle.io/petevarley/slacker-notes/metrics)
