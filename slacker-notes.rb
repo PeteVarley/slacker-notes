@@ -14,10 +14,6 @@ set :partial_template_engine, :erb
 
 require_relative 'models'
 
-helpers do
- #saving for later
-end
-
 use Rack::Session::Cookie
 use OmniAuth::Builder do
   provider :developer
@@ -25,12 +21,41 @@ use OmniAuth::Builder do
   provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
 end
 
+#use Rack::Session::Pool, cookie_only = false
+
+helpers do
+ # define a current_user method, so we can be sure if an user is authenticated
+  def current_user
+    !session[:uid].nil?
+  end
+end
+
+before do
+  # we do not want to redirect to slack or github when the path info starts
+  # with /auth/
+  pass if request.path_info =~ /^\/auth\//
+
+  # /auth/twitter is captured by omniauth:
+  # when the path info matches /auth/slack, omniauth will redirect to slack
+  redirect to('/auth/slack') unless current_user
+end
+
+get "/" do
+
+
+  erb :home
+
+end
+
 get '/slack_oauth' do
-  #redirect 'http://localhost:4567/auth/slack/'
-  redirect 'http://slacker-notes.herokuapp.com/auth/slack/'
+  redirect 'http://localhost:4567/auth/slack/'
+  #redirect 'http://slacker-notes.herokuapp.com/auth/slack/'
 end
 
 get '/auth/:provider/callback' do
+  # probably you will need to create a user in the database too...
+  session[:uid] = env['omniauth.auth']['uid']
+
   auth = request.env['omniauth.auth']
   puts @name
   puts "********* auth ********"
@@ -89,7 +114,8 @@ get '/auth/:provider/callback' do
     puts @names.class
 
 
-  erb :home
+  # this is the main endpoint to your application
+  redirect to('/')
 end
 
 get '/auth/failure' do
@@ -185,23 +211,17 @@ def save_users(users)
   end
 end
 
-get "/auth" do
-  #this won't work until token variable is stored
-  # puts "*** users information ***"
-  # puts User.last.name
-  # @user = User.last.name
-  # puts @user
-  # erb :test
-  #redirect "http://localhost:4567/slack_oauth"
-  redirect "http://slacker-notes.herokuapp.com/slack_oauth"
+# get "/auth" do
+#   #this won't work until token variable is stored
+#   # puts "*** users information ***"
+#   # puts User.last.name
+#   # @user = User.last.name
+#   # puts @user
+#   # erb :test
+#   #redirect "http://localhost:4567/slack_oauth"
+#   redirect "http://slacker-notes.herokuapp.com/slack_oauth"
 
-end
-get "/" do
-
-
-    erb :welcome
-
-end
+# end
 
 get "/archiver" do
   erb :archiver
