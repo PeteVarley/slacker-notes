@@ -35,28 +35,51 @@ before do
   # with /auth/
   pass if request.path_info =~ /^\/auth\//
 
-  # /auth/twitter is captured by omniauth:
+  # /auth/slack is captured by omniauth:
   # when the path info matches /auth/slack, omniauth will redirect to slack
   redirect to('/auth/slack') unless current_user
 end
 
 get "/" do
+  puts "*** session uid ***"
+  puts session[:uid]
+  puts "*** p session ***"
+  p session
+  erb :welcome
 
-
-  erb :home
-
-end
-
-get '/slack_oauth' do
-  redirect 'http://localhost:4567/auth/slack/'
-  #redirect 'http://slacker-notes.herokuapp.com/auth/slack/'
 end
 
 get '/auth/:provider/callback' do
   # probably you will need to create a user in the database too...
   session[:uid] = env['omniauth.auth']['uid']
+  puts '*** uid ***'
+  p session[:uid]
 
+  session[:provider] = env['omniauth.auth']['provider']
+  puts '*** provider ***'
+  p session[:provider]
+
+  env_auth = env['omniauth.auth']
+  puts '*** env_auth ****'
+  p env_auth
+
+  session[:auth] = env['omniauth.auth']
+  puts "*** session auth ***"
+  p session[:auth]
+
+  session[:credentials] = env['omniauth.auth']['credentials']
+  puts "*** session credentials ***"
+  p session[:credentials]
+
+   session[:token] = env['omniauth.auth']['credentials']['token']
+  puts "*** session credentials token ***"
+  p session[:token]
+
+
+  puts "*** auth ***"
   auth = request.env['omniauth.auth']
+  puts auth
+
   puts @name
   puts "********* auth ********"
   puts auth
@@ -64,6 +87,10 @@ get '/auth/:provider/callback' do
   puts auth.class
   puts "********* credentials ********"
   puts auth['credentials']
+
+  puts '*** credentials ***'
+  credentials = auth['credentials']['token']
+  puts credentials
 
   puts "********* token ********"
   credentials = auth['credentials']
@@ -80,38 +107,38 @@ get '/auth/:provider/callback' do
   # puts 'User id'
   # puts User.id
 
-  puts "********* extra ********"
-  puts auth['extra']
-  puts "****** extra hash ******"
-  extra = auth['extra']
-  raw_info = extra['raw_info']
-  puts '***** raw_info *****'
-  puts raw_info
+  # puts "********* extra ********"
+  # puts auth['extra']
+  # puts "****** extra hash ******"
+  # extra = auth['extra']
+  # raw_info = extra['raw_info']
+  # puts '***** raw_info *****'
+  # puts raw_info
 
-  puts "********* user ********"
-  @user = raw_info['user']
-  puts @user
+  # puts "********* user ********"
+  # @user = raw_info['user']
+  # puts @user
 
-  puts "********* team ********"
-  @team = raw_info['team']
-  puts @team
+  # puts "********* team ********"
+  # @team = raw_info['team']
+  # puts @team
 
-  puts "********* team_id ********"
-  @team_id = raw_info['team_id']
-  puts @team_id
+  # puts "********* team_id ********"
+  # @team_id = raw_info['team_id']
+  # puts @team_id
 
-  SLACK_API_TOKEN=@token
-  puts "****** token ******"
-  puts SLACK_API_TOKEN
+  # SLACK_API_TOKEN=@token
+  # puts "****** token ******"
+  # puts SLACK_API_TOKEN
 
-  @channels = JSON.parse(client.channels.list)
-    puts "***** channels *****"
-    puts @channels
-    puts "***** @channels['channels'] *****"
-    puts @channels["channels"]
-    puts "***** channel names *****"
-    @names = @channels["channels"]
-    puts @names.class
+  # @channels = JSON.parse(client.channels.list)
+  #   puts "***** channels *****"
+  #   puts @channels
+  #   puts "***** @channels['channels'] *****"
+  #   puts @channels["channels"]
+  #   puts "***** channel names *****"
+  #   @names = @channels["channels"]
+  #   puts @names.class
 
 
   # this is the main endpoint to your application
@@ -211,24 +238,43 @@ def save_users(users)
   end
 end
 
-# get "/auth" do
-#   #this won't work until token variable is stored
-#   # puts "*** users information ***"
-#   # puts User.last.name
-#   # @user = User.last.name
-#   # puts @user
-#   # erb :test
-#   #redirect "http://localhost:4567/slack_oauth"
-#   redirect "http://slacker-notes.herokuapp.com/slack_oauth"
+get "/auth" do
+  if current_user
+    puts "*** uid ***"
+    puts session[:uid]
+    puts "*** session[:token] ***"
+    puts session[:token]
 
-# end
+    puts "*** token ***"
+    puts session[:token]
+    puts "*** client ***"
+    p client
+
+    @channels = JSON.parse(client.channels.list)
+    puts "***** channels *****"
+    puts @channels
+    puts "***** @channels['channels'] *****"
+    puts @channels["channels"]
+    puts "***** channel names *****"
+    @names = @channels["channels"]
+    puts @names.class
+
+    erb :home
+  else
+    redirect "http://slacker-notes.herokuapp.com/slack_oauth"
+  end
+
+end
 
 get "/archiver" do
   erb :archiver
 end
 
 def client
-  client = Slack::Client.new(token: SLACK_API_TOKEN)
+  slacker_notes_token = session[:token]
+  # puts "slacker_notes_token"
+  # p slacker_notes_token
+  client = Slack::Client.new(token: slacker_notes_token)
 end
 
 get("/users") do
@@ -346,13 +392,36 @@ def request_channel_history(number_of_messages)
   puts channel.name
   puts channel.id
   puts "***** channel.save true? *****"
-  puts channel.errors
-  puts channel.save
+  p channel.errors
+  p channel.save
   channel.save
 
   puts '***** channel history requested *****'
+
+  puts "client in chanel context"
+  puts client
+
+
+  puts "*** JSON.parse(client.channels.history(:channel=>channel.name,:count=>number)) ***"
+  p JSON.parse(client.channels.history(:channel=>channel.name,:count=>number))
+
+
   channel_history_requested = JSON.parse(client.channels.history(:channel=>channel.name,:count=>number))
+  puts "channel_history_requested"
   puts channel_history_requested
+
+  puts "channel_history_requested['ok']"
+  puts channel_history_requested["ok"]
+
+  puts "channel_history_requested['messages']"
+  p channel_history_requested["messages"]
+  channel_history_requested["messages"]
+
+  puts "*** slacker_notes_messages_array ***"
+  slacker_notes_messages_array = channel_history_requested["messages"]
+  p slacker_notes_messages_array
+
+
   message_hashes_from_channel_history(channel_history_requested)
 end
 
@@ -362,7 +431,7 @@ def message_hashes_from_channel_history(messages_requested)
 
   messages_array = messages_requested["messages"]
   puts "***** messages_array *****"
-  puts messages_array
+  p messages_array
 
   puts "**messages_array*****"
   puts messages_array
@@ -423,18 +492,18 @@ def build_message_hash_for_chat_archive(slack_message_hash)
     end
   end
 
-  @chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
+  @slacker_notes_chat = Chat.create(:user => @user,:text => @text,:ts => @ts,:attachments => @attachments,:title => @title,:title_link => @title_link,:attach_text => @attach_text,:fallback => @fallback,:thumb_url =>@thumb_url,:from_url => @from_url,:thumb_width => @thumb_width,:thumb_height => @thumb_height)
 
-  puts "***** @chat *****"
-  puts @chat
-  add_chat_to_current_archive(@chat)
+  puts "***** @slacker_notes_chat *****"
+  puts @slacker_notes_chat
+  add_chat_to_current_archive(@slacker_notes_chat)
 end
 
 def add_chat_to_current_archive(chat)
   puts "***** @current_archive *****"
   puts @current_archive
 
-  @current_archive.chats << @chat
+  @current_archive.chats << @slacker_notes_chat
   save_chat(@current_archive)
 end
 
@@ -462,7 +531,7 @@ end
 def errors_saving_chat
   if @current_archive.save
    # my_account is valid and has been saved
-    if @chat.saved?()
+    if @slacker_notes_chat.saved?()
       redirect "/archive/#{@current_archive.id}"
     else
       erb :error
