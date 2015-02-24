@@ -12,6 +12,11 @@ gem 'omniauth-oauth2'
 gem 'omniauth-github'
 gem 'omniauth-slack'
 
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
+end
+
 group :development do
   gem "sqlite3"
   gem "dm-sqlite-adapter"
@@ -21,6 +26,7 @@ group :development do
   gem 'binding_of_caller'
 
 end
+
 
 group :production do
   gem 'pg'
