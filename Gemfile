@@ -12,8 +12,11 @@ gem 'omniauth-oauth2'
 gem 'omniauth-github'
 gem 'omniauth-slack'
 
-group :test do
+group :test, :development do
   gem 'rspec'
+end
+
+group :test do
   gem 'rack-test'
 end
 
