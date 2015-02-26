@@ -12,14 +12,6 @@ gem 'omniauth-oauth2'
 gem 'omniauth-github'
 gem 'omniauth-slack'
 
-group :test, :development do
-  gem 'rspec'
-end
-
-group :test do
-  gem 'rack-test'
-end
-
 group :development do
   gem "sqlite3"
   gem "dm-sqlite-adapter"
